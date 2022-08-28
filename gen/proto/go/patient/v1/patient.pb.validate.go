@@ -1443,11 +1443,11 @@ func (m *Patient) validate(all bool) error {
 	}
 
 	if all {
-		switch v := interface{}(m.GetSymptoms()).(type) {
+		switch v := interface{}(m.GetMedicalDetails()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
 				errors = append(errors, PatientValidationError{
-					field:  "Symptoms",
+					field:  "MedicalDetails",
 					reason: "embedded message failed validation",
 					cause:  err,
 				})
@@ -1455,21 +1455,23 @@ func (m *Patient) validate(all bool) error {
 		case interface{ Validate() error }:
 			if err := v.Validate(); err != nil {
 				errors = append(errors, PatientValidationError{
-					field:  "Symptoms",
+					field:  "MedicalDetails",
 					reason: "embedded message failed validation",
 					cause:  err,
 				})
 			}
 		}
-	} else if v, ok := interface{}(m.GetSymptoms()).(interface{ Validate() error }); ok {
+	} else if v, ok := interface{}(m.GetMedicalDetails()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
 			return PatientValidationError{
-				field:  "Symptoms",
+				field:  "MedicalDetails",
 				reason: "embedded message failed validation",
 				cause:  err,
 			}
 		}
 	}
+
+	// no validation rules for SpecialistId
 
 	if len(errors) > 0 {
 		return PatientMultiError(errors)
@@ -1560,31 +1562,31 @@ var _Patient_DateOfBirth_Pattern = regexp.MustCompile("^\\d{4}-(0[1-9]|1[0-2])-(
 
 var _Patient_InitialAppointmentDate_Pattern = regexp.MustCompile("^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$")
 
-// Validate checks the field values on Symptoms with the rules defined in the
-// proto definition for this message. If any rules are violated, the first
+// Validate checks the field values on MedicalDetails with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
-func (m *Symptoms) Validate() error {
+func (m *MedicalDetails) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on Symptoms with the rules defined in
-// the proto definition for this message. If any rules are violated, the
-// result is a list of violation errors wrapped in SymptomsMultiError, or nil
-// if none found.
-func (m *Symptoms) ValidateAll() error {
+// ValidateAll checks the field values on MedicalDetails with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in MedicalDetailsMultiError,
+// or nil if none found.
+func (m *MedicalDetails) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *Symptoms) validate(all bool) error {
+func (m *MedicalDetails) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
 
 	var errors []error
 
-	if _, ok := Symptoms_Risk_name[int32(m.GetPain())]; !ok {
-		err := SymptomsValidationError{
-			field:  "Pain",
+	if _, ok := MedicalDetails_Risk_name[int32(m.GetAbdomenPain())]; !ok {
+		err := MedicalDetailsValidationError{
+			field:  "AbdomenPain",
 			reason: "value must be one of the defined enum values",
 		}
 		if !all {
@@ -1593,19 +1595,33 @@ func (m *Symptoms) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	if _, ok := MedicalDetails_Risk_name[int32(m.GetCystRuptures())]; !ok {
+		err := MedicalDetailsValidationError{
+			field:  "CystRuptures",
+			reason: "value must be one of the defined enum values",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	// no validation rules for Surgeries
+
 	if len(errors) > 0 {
-		return SymptomsMultiError(errors)
+		return MedicalDetailsMultiError(errors)
 	}
 
 	return nil
 }
 
-// SymptomsMultiError is an error wrapping multiple validation errors returned
-// by Symptoms.ValidateAll() if the designated constraints aren't met.
-type SymptomsMultiError []error
+// MedicalDetailsMultiError is an error wrapping multiple validation errors
+// returned by MedicalDetails.ValidateAll() if the designated constraints
+// aren't met.
+type MedicalDetailsMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m SymptomsMultiError) Error() string {
+func (m MedicalDetailsMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -1614,11 +1630,11 @@ func (m SymptomsMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m SymptomsMultiError) AllErrors() []error { return m }
+func (m MedicalDetailsMultiError) AllErrors() []error { return m }
 
-// SymptomsValidationError is the validation error returned by
-// Symptoms.Validate if the designated constraints aren't met.
-type SymptomsValidationError struct {
+// MedicalDetailsValidationError is the validation error returned by
+// MedicalDetails.Validate if the designated constraints aren't met.
+type MedicalDetailsValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -1626,22 +1642,22 @@ type SymptomsValidationError struct {
 }
 
 // Field function returns field value.
-func (e SymptomsValidationError) Field() string { return e.field }
+func (e MedicalDetailsValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e SymptomsValidationError) Reason() string { return e.reason }
+func (e MedicalDetailsValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e SymptomsValidationError) Cause() error { return e.cause }
+func (e MedicalDetailsValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e SymptomsValidationError) Key() bool { return e.key }
+func (e MedicalDetailsValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e SymptomsValidationError) ErrorName() string { return "SymptomsValidationError" }
+func (e MedicalDetailsValidationError) ErrorName() string { return "MedicalDetailsValidationError" }
 
 // Error satisfies the builtin error interface
-func (e SymptomsValidationError) Error() string {
+func (e MedicalDetailsValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -1653,14 +1669,14 @@ func (e SymptomsValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sSymptoms.%s: %s%s",
+		"invalid %sMedicalDetails.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = SymptomsValidationError{}
+var _ error = MedicalDetailsValidationError{}
 
 var _ interface {
 	Field() string
@@ -1668,4 +1684,4 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = SymptomsValidationError{}
+} = MedicalDetailsValidationError{}

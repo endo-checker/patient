@@ -209,8 +209,11 @@
                       "type": "string",
                       "format": "date-time"
                     },
-                    "symptoms": {
-                      "$ref": "#/definitions/v1Symptoms"
+                    "medicalDetails": {
+                      "$ref": "#/definitions/v1MedicalDetails"
+                    },
+                    "specialistId": {
+                      "type": "string"
                     }
                   },
                   "title": "patient represents a platform patient uploaded by a specialist"
@@ -230,7 +233,7 @@
     }
   },
   "definitions": {
-    "SymptomsRisk": {
+    "MedicalDetailsRisk": {
       "type": "string",
       "enum": [
         "RISK_UNSPECIFIED",
@@ -300,6 +303,21 @@
       },
       "title": "GetResponse returns an patient based on the patient id"
     },
+    "v1MedicalDetails": {
+      "type": "object",
+      "properties": {
+        "abdomenPain": {
+          "$ref": "#/definitions/MedicalDetailsRisk"
+        },
+        "cystRuptures": {
+          "$ref": "#/definitions/MedicalDetailsRisk"
+        },
+        "Surgeries": {
+          "type": "string"
+        }
+      },
+      "title": "All the medical info available for each patient"
+    },
     "v1Patient": {
       "type": "object",
       "properties": {
@@ -328,8 +346,11 @@
           "type": "string",
           "format": "date-time"
         },
-        "symptoms": {
-          "$ref": "#/definitions/v1Symptoms"
+        "medicalDetails": {
+          "$ref": "#/definitions/v1MedicalDetails"
+        },
+        "specialistId": {
+          "type": "string"
         }
       },
       "title": "patient represents a platform patient uploaded by a specialist"
@@ -349,14 +370,6 @@
         }
       },
       "title": "QueryResponse returns a paged list of patients"
-    },
-    "v1Symptoms": {
-      "type": "object",
-      "properties": {
-        "pain": {
-          "$ref": "#/definitions/SymptomsRisk"
-        }
-      }
     },
     "v1UpdateResponse": {
       "type": "object",

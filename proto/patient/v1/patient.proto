@@ -1,0 +1,116 @@
+syntax = "proto3";
+
+package patient.v1;
+
+import "google/api/annotations.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "validate/validate.proto";
+
+// patient is 
+service PatientService {
+  // adding patients.
+  rpc Create(CreateRequest) returns (CreateResponse){
+     option (google.api.http) = {
+      post : "/v1"
+      body : "*"
+    };
+  };  
+
+  // quering patients.
+  rpc Query(QueryRequest) returns (QueryResponse){
+     option (google.api.http) = {
+      get : "/v1"
+    };
+  };
+
+  // retrieving patient.
+  rpc Get(GetRequest) returns (GetResponse){
+     option (google.api.http) = {
+      get : "/v1/{id}"
+     
+    };
+  };
+
+  // UpdateRequest is used to specify a customer to update.
+  rpc Update(UpdateRequest) returns (UpdateResponse){
+     option (google.api.http) = {
+        put : "/v1/{patient.id}"
+        body : "*"
+    };
+  };
+
+  // Delete removes patients
+  rpc Delete(DeleteRequest) returns (DeleteResponse){
+     option (google.api.http) = {
+       delete : "/v1/{id}"
+    };
+  };
+}
+
+// Create contains information needed to create a new patient.
+message CreateRequest  { Patient patient = 1[ (validate.rules).message.required = true ]; }
+// CreateResponse returns the newly created patient for the Create method.
+message CreateResponse { Patient patient = 1; }
+
+// Query is used to specify the patient to retrieve.
+message QueryRequest  { 
+  int64 offset = 1 [ (validate.rules).int64.gte = 0 ];
+  int64 limit = 2 [ (validate.rules).int64.gte = 0 ];
+  string name = 3; 
+}
+// QueryResponse returns a paged list of patients
+message QueryResponse  { 
+  repeated Patient cursor = 1;
+  int64 matches = 2;
+}
+
+// Get is used to specify the patient to retrieve.
+message GetRequest {  string id = 1 [ (validate.rules).string.uuid = true ]; }
+// GetResponse returns an patient based on the patient id
+message GetResponse { Patient patient = 1; }
+
+// Update is used to specify a patient to update.
+message UpdateRequest  { 
+  Patient patient = 1;
+  google.protobuf.FieldMask update_mask = 2;
+}
+// UpdateResponse returns an updated patient based on the one provided
+message UpdateResponse { Patient patient = 1; }
+
+// Delete contains information needed to create a new person.
+message DeleteRequest { string id = 1 [ (validate.rules).string.uuid = true ];}
+// DeleteResponse returns an empty response and can be ignored.
+message DeleteResponse {}
+
+// patient represents a platform patient uploaded by a specialist
+message Patient {
+  string id = 1   [ (validate.rules).string = {ignore_empty : true, uuid : true} ];
+  string given_names = 2 [ (validate.rules).string = {min_len : 2, max_len : 50} ];
+  string family_name = 3 [ (validate.rules).string = {min_len : 2, max_len : 50} ];
+  string date_of_birth = 4 [ (validate.rules).string = {
+    ignore_empty : true,
+    pattern : "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$"
+  } ];
+  string nhi_number = 5;
+  string email = 6;
+  string initial_appointment_date = 7 [ (validate.rules).string = {
+    ignore_empty : true,
+    pattern : "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$"
+  } ];
+  google.protobuf.Timestamp created_at = 8; 
+  Symptoms symptoms = 9;
+}
+
+message Symptoms  {
+    // determines the severity of a symptom 
+  enum Risk {
+    RISK_UNSPECIFIED = 0; 
+    RISK_LOW = 1;
+    RISK_MODERATE = 2; 
+    RISK_HIGH = 3; 
+    RISK_SEVERE = 4;
+  }
+  Risk pain = 1 [ (validate.rules).enum.defined_only = true ]; 
+}

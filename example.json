@@ -1,0 +1,26 @@
+[{
+    "patient": {
+        "date_of_birth": "14/06/1998",
+        "email": "zachary.weston@propellerhead.co.nz",
+        "family_name": "Weston",
+        "given_names": "Zachary Ethan",
+        "initial_appointment_date": "20/03/2021",
+        "nhi_number": "123456",
+        "symptoms": {
+            "pain": "RISK_LOW"
+        }
+    }
+},
+{
+    "patient": {
+        "date_of_birth": "18/06/1998",
+        "email": "emma.bultitude@propellerhead.co.nz",
+        "family_name": "Bultitude",
+        "given_names": "Emma Rose",
+        "initial_appointment_date": "20/03/2021",
+        "nhi_number": "123456",
+        "symptoms": {
+            "pain": 4
+        }
+    }
+}]

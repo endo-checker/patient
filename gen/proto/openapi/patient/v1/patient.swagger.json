@@ -1,0 +1,371 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "patient/v1/patient.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "PatientService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1": {
+      "get": {
+        "summary": "quering patients.",
+        "operationId": "PatientService_Query",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1QueryResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "PatientService"
+        ]
+      },
+      "post": {
+        "summary": "adding patients.",
+        "operationId": "PatientService_Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CreateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "PatientService"
+        ]
+      }
+    },
+    "/v1/{id}": {
+      "get": {
+        "summary": "retrieving patient.",
+        "operationId": "PatientService_Get",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "PatientService"
+        ]
+      },
+      "delete": {
+        "summary": "Delete removes patients",
+        "operationId": "PatientService_Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DeleteResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "PatientService"
+        ]
+      }
+    },
+    "/v1/{patient.id}": {
+      "put": {
+        "summary": "UpdateRequest is used to specify a customer to update.",
+        "operationId": "PatientService_Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "patient.id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "patient": {
+                  "type": "object",
+                  "properties": {
+                    "givenNames": {
+                      "type": "string"
+                    },
+                    "familyName": {
+                      "type": "string"
+                    },
+                    "dateOfBirth": {
+                      "type": "string"
+                    },
+                    "nhiNumber": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "initialAppointmentDate": {
+                      "type": "string"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "symptoms": {
+                      "$ref": "#/definitions/v1Symptoms"
+                    }
+                  },
+                  "title": "patient represents a platform patient uploaded by a specialist"
+                },
+                "updateMask": {
+                  "type": "string"
+                }
+              },
+              "description": "Update is used to specify a patient to update."
+            }
+          }
+        ],
+        "tags": [
+          "PatientService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "SymptomsRisk": {
+      "type": "string",
+      "enum": [
+        "RISK_UNSPECIFIED",
+        "RISK_LOW",
+        "RISK_MODERATE",
+        "RISK_HIGH",
+        "RISK_SEVERE"
+      ],
+      "default": "RISK_UNSPECIFIED",
+      "title": "determines the severity of a symptom"
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1CreateRequest": {
+      "type": "object",
+      "properties": {
+        "patient": {
+          "$ref": "#/definitions/v1Patient"
+        }
+      },
+      "description": "Create contains information needed to create a new patient."
+    },
+    "v1CreateResponse": {
+      "type": "object",
+      "properties": {
+        "patient": {
+          "$ref": "#/definitions/v1Patient"
+        }
+      },
+      "description": "CreateResponse returns the newly created patient for the Create method."
+    },
+    "v1DeleteResponse": {
+      "type": "object",
+      "description": "DeleteResponse returns an empty response and can be ignored."
+    },
+    "v1GetResponse": {
+      "type": "object",
+      "properties": {
+        "patient": {
+          "$ref": "#/definitions/v1Patient"
+        }
+      },
+      "title": "GetResponse returns an patient based on the patient id"
+    },
+    "v1Patient": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "givenNames": {
+          "type": "string"
+        },
+        "familyName": {
+          "type": "string"
+        },
+        "dateOfBirth": {
+          "type": "string"
+        },
+        "nhiNumber": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "initialAppointmentDate": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "symptoms": {
+          "$ref": "#/definitions/v1Symptoms"
+        }
+      },
+      "title": "patient represents a platform patient uploaded by a specialist"
+    },
+    "v1QueryResponse": {
+      "type": "object",
+      "properties": {
+        "cursor": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1Patient"
+          }
+        },
+        "matches": {
+          "type": "string",
+          "format": "int64"
+        }
+      },
+      "title": "QueryResponse returns a paged list of patients"
+    },
+    "v1Symptoms": {
+      "type": "object",
+      "properties": {
+        "pain": {
+          "$ref": "#/definitions/SymptomsRisk"
+        }
+      }
+    },
+    "v1UpdateResponse": {
+      "type": "object",
+      "properties": {
+        "patient": {
+          "$ref": "#/definitions/v1Patient"
+        }
+      },
+      "title": "UpdateResponse returns an updated patient based on the one provided"
+    }
+  }
+}

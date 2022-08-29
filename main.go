@@ -22,7 +22,7 @@ import (
 	"github.com/endo-checker/patient/store"
 )
 
-const defPort = "localhost:8080"
+const defPort = ":8080"
 
 func main() {
 

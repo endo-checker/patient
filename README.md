@@ -6,7 +6,7 @@ For now I haven't added any securtity features, or protected my db connection as
 
 ## Get Started ##
 - Install/update dependencies `go get -u`
-- Initiate gRPC: `protoc --proto_path=proto user/v1/user.proto --go_out=. --go-grpc_out=.` This is the standard way of generating gRPC, however with this app I am using a makefile configured with dapr to manage my commands. So instead run `make proto`, this will also send the proto definitions to `https://buf.build` as a commit. 
+- Initiate gRPC: `protoc --proto_path=proto patient/v1/patient.proto --go_out=. --go-grpc_out=.` This is the standard way of generating gRPC, however with this app I am using a makefile configured with dapr to manage my commands. So instead run `make proto`, this will also send the proto definitions to `https://buf.build` as a commit. 
 - Run the application `go run .` or `make run`
 
 ### Dapr ###

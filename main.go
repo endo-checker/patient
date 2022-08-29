@@ -22,7 +22,6 @@ import (
 const defPort = ":8080"
 
 func main() {
-
 	grpcSrv := grpc.NewServer()
 	defer grpcSrv.Stop()         // stop server on exit
 	reflection.Register(grpcSrv) // for postman
@@ -50,9 +49,7 @@ func main() {
 	httpMux := gw.NewServeMux(hm, mo)
 
 	dopts := []grpc.DialOption{grpc.WithInsecure()}
-
-	err := pb.RegisterPatientServiceHandlerFromEndpoint(context.Background(), httpMux, defPort, dopts)
-	if err != nil {
+	if err := pb.RegisterPatientServiceHandlerFromEndpoint(context.Background(), httpMux, defPort, dopts); err != nil {
 		log.Fatal(err)
 	}
 

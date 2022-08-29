@@ -28,7 +28,7 @@ machine go.buf.build login <your Buf username> password <your Buf API key>
 ```
 
 ## Set up Docker ## 
-* To make a build on `docker` run `docker build --tag user .`
+* To make a build on `docker` run `docker build --tag patient .`
 * To run on docker `docker run -d -p 8080:8080 user`
 
 ## Postman Setup ##

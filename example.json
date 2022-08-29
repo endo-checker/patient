@@ -1,17 +1,18 @@
 [
-{
-    "patient": {
-         "date_of_birth": "18/06/1998",
-        "email": "emma.bultitude@propellerhead.co.nz",
-        "family_name": "Bultitude",
-        "given_names": "Emma Rose",
-        "initial_appointment_date": "20/03/2021",
-        "nhi_number": "123456",
-        "specialist_id": "6523662882994382948923335",
-        "medical_details": {
-            "abdomen_pain": 4,
-            "cyst_ruptures": 3,
-            "Surgeries": 2
+    {
+        "patient": {
+            "date_of_birth": "28/06/1998",
+            "email": "emma.bultitude@propellerhead.co.nz",
+            "family_name": "Bultitude",
+            "given_names": "Emma Rose",
+            "initial_appointment_date": "20/03/2021",
+            "nhi_number": "123456",
+            "specialist_id": "6523662882994382948923335",
+            "medical_details": {
+                "abdomen_pain": 4,
+                "cyst_ruptures": 3,
+                "Surgeries": 2
+            }
         }
     }
-}]
+]

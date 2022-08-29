@@ -21,8 +21,8 @@ type Storer interface {
 	DeletePatient(id string, md metadata.MD) error
 }
 
-func (s Store) AddPatient(u *pb.Patient, md metadata.MD) error {
-	_, err := s.locaColl.InsertOne(context.Background(), u)
+func (s Store) AddPatient(p *pb.Patient, md metadata.MD) error {
+	_, err := s.locaColl.InsertOne(context.Background(), p)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -48,8 +48,8 @@ func (s Store) QueryPatient(qr *pb.QueryRequest, md metadata.MD) ([]*pb.Patient,
 		return nil, 0, err
 	}
 
-	var users []*pb.Patient
-	if err := cursor.All(context.Background(), &users); err != nil {
+	var ptnts []*pb.Patient
+	if err := cursor.All(context.Background(), &ptnts); err != nil {
 		return nil, 0, err
 	}
 
@@ -58,24 +58,24 @@ func (s Store) QueryPatient(qr *pb.QueryRequest, md metadata.MD) ([]*pb.Patient,
 		return nil, 0, err
 	}
 
-	return users, matches, err
+	return ptnts, matches, err
 }
 
 func (s Store) GetPatient(id string, md metadata.MD) (*pb.Patient, error) {
-	var u pb.Patient
+	var p pb.Patient
 
-	if err := s.locaColl.FindOne(context.Background(), bson.M{"id": id}).Decode(&u); err != nil {
+	if err := s.locaColl.FindOne(context.Background(), bson.M{"id": id}).Decode(&p); err != nil {
 		if err == mongo.ErrNoDocuments {
-			return &u, err
+			return &p, err
 		}
-		return &u, err
+		return &p, err
 	}
 
-	return &u, nil
+	return &p, nil
 }
 
-func (s Store) UpdatePatient(id string, md metadata.MD, u *pb.Patient) error {
-	insertResult, err := s.locaColl.ReplaceOne(context.Background(), bson.M{"id": id}, u)
+func (s Store) UpdatePatient(id string, md metadata.MD, p *pb.Patient) error {
+	insertResult, err := s.locaColl.ReplaceOne(context.Background(), bson.M{"id": id}, p)
 	if err != nil {
 		log.Fatal(err)
 	}

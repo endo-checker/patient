@@ -4,6 +4,7 @@ go 1.18
 
 require (
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.11.3
+	github.com/soheilhy/cmux v0.1.5
 	go.buf.build/grpc/go/envoyproxy/protoc-gen-validate v1.4.7
 	google.golang.org/genproto v0.0.0-20220822174746-9e6da59bd2fc
 	google.golang.org/grpc v1.49.0
@@ -27,8 +28,10 @@ require (
 require (
 	github.com/dapr/dapr v1.8.4 // indirect
 	github.com/dapr/go-sdk v1.5.0
+	github.com/felixge/httpsnoop v1.0.3
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/uuid v1.3.0
+	github.com/grpc-ecosystem/grpc-gateway v1.16.0
 	go.mongodb.org/mongo-driver v1.10.1
 	golang.org/x/net v0.0.0-20220826154423-83b083e8dc8b // indirect
 	golang.org/x/sys v0.0.0-20220825204002-c680a09ffe64 // indirect

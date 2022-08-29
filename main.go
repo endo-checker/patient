@@ -3,14 +3,19 @@ package main
 import (
 	"context"
 	"log"
-	"net"
-	"net/http"
 
-	"github.com/felixge/httpsnoop"
+	// "net"
+	"net/http"
+	"strings"
+
 	gw "github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-	"github.com/soheilhy/cmux"
+
+	// "github.com/soheilhy/cmux"
+	"golang.org/x/net/http2"
+	"golang.org/x/net/http2/h2c"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
+	"google.golang.org/protobuf/encoding/protojson"
 
 	pb "github.com/endo-checker/patient/gen/proto/go/patient/v1"
 	"github.com/endo-checker/patient/handler"
@@ -29,42 +34,48 @@ func main() {
 		Store: store.Connect(),
 	}
 
+	hm := gw.WithIncomingHeaderMatcher(func(key string) (string, bool) {
+		switch key {
+		case "X-Token-C-Tenant", "X-Token-C-User", "Permissions":
+			return key, true
+		default:
+			return gw.DefaultHeaderMatcher(key)
+		}
+	})
+
+	mo := gw.WithMarshalerOption("*", &gw.JSONPb{
+		MarshalOptions: protojson.MarshalOptions{
+			EmitUnpopulated: false,
+		},
+	})
+
 	pb.RegisterPatientServiceServer(grpcSrv, h)
-	mux := gw.NewServeMux()
+	httpMux := gw.NewServeMux(hm, mo)
 
 	dopts := []grpc.DialOption{grpc.WithInsecure()}
 
-	err := pb.RegisterPatientServiceHandlerFromEndpoint(context.Background(), mux, defPort, dopts)
+	err := pb.RegisterPatientServiceHandlerFromEndpoint(context.Background(), httpMux, defPort, dopts)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	server := http.Server{
-		Handler: withLogger(mux),
+	mux := httpGrpcMux(httpMux, grpcSrv)
+	httpSrv := &http.Server{
+		Addr:    defPort,
+		Handler: h2c.NewHandler(mux, &http2.Server{}),
 	}
-	// creating a listener for server
-	lis, err := net.Listen("tcp", ":8080")
-	if err != nil {
-		log.Fatalln("Failed to listen:", err)
+
+	if err := httpSrv.ListenAndServe(); err != http.ErrServerClosed {
+		return
 	}
-	m := cmux.New(lis)
-	
-	httpL := m.Match(cmux.HTTP1Fast())
-
-	grpcL := m.Match(cmux.HTTP2())
-
-	go server.Serve(httpL)
-	
-	go grpcSrv.Serve(grpcL)
-	
-	m.Serve()
-
-
 }
 
-func withLogger(handler http.Handler) http.Handler {
-	return http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
-		m := httpsnoop.CaptureMetrics(handler, writer, request)
-		log.Printf("http[%d]-- %s -- %s\n", m.Code, m.Duration, request.URL.Path)
+func httpGrpcMux(httpHandler http.Handler, grpcServer *grpc.Server) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.ProtoMajor == 2 && strings.Contains(r.Header.Get("Content-Type"), "application/grpc") {
+			grpcServer.ServeHTTP(w, r)
+		} else {
+			httpHandler.ServeHTTP(w, r)
+		}
 	})
 }

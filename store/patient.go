@@ -32,14 +32,22 @@ func (s Store) AddPatient(p *pb.Patient, md metadata.MD) error {
 func (s Store) QueryPatient(qr *pb.QueryRequest, md metadata.MD) ([]*pb.Patient, int64, error) {
 	var filter bson.M
 
-	if qr.Name != "" {
-		filter = bson.M{"$text": bson.M{"$search": `"` + qr.Name + `"`}}
+	if qr.SpecialistId != "" {
+		filter = bson.M{"$text": bson.M{"$search": `"` + qr.SpecialistId + `"`}}
+	}
+
+	if qr.GivenNames != "" {
+		filter = bson.M{"$text": bson.M{"$search": `"` + qr.GivenNames + `"`}}
+	}
+
+	if qr.FamilyName != "" {
+		filter = bson.M{"$text": bson.M{"$search": `"` + qr.FamilyName + `"`}}
 	}
 
 	opt := options.FindOptions{
 		Skip:  &qr.Offset,
 		Limit: &qr.Limit,
-		Sort:  bson.M{"name": -1},
+		Sort:  bson.M{"family_name": -1},
 	}
 
 	ctx := context.Background()

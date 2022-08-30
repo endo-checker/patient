@@ -351,7 +351,11 @@ func (m *QueryRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	// no validation rules for Name
+	// no validation rules for GivenNames
+
+	// no validation rules for FamilyName
+
+	// no validation rules for SpecialistId
 
 	if len(errors) > 0 {
 		return QueryRequestMultiError(errors)

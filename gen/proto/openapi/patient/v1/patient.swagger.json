@@ -50,7 +50,19 @@
             "format": "int64"
           },
           {
-            "name": "name",
+            "name": "givenNames",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "familyName",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "specialistId",
             "in": "query",
             "required": false,
             "type": "string"
@@ -312,7 +324,7 @@
         "cystRuptures": {
           "$ref": "#/definitions/MedicalDetailsRisk"
         },
-        "Surgeries": {
+        "surgeries": {
           "type": "string"
         }
       },

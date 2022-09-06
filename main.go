@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 
 	gw "github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
@@ -20,7 +21,7 @@ import (
 )
 
 func main() {
-	defPort := store.LoadEnv("port")
+	defPort := os.Getenv("PORT")
 
 	grpcSrv := grpc.NewServer()
 	defer grpcSrv.Stop()         // stop server on exit
@@ -49,13 +50,13 @@ func main() {
 	pb.RegisterPatientServiceServer(grpcSrv, h)
 	httpMux := gw.NewServeMux(hm, mo)
 	dopts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
-	if err := pb.RegisterPatientServiceHandlerFromEndpoint(context.Background(), httpMux, defPort, dopts); err != nil {
+	if err := pb.RegisterPatientServiceHandlerFromEndpoint(context.Background(), httpMux, ":"+defPort, dopts); err != nil {
 		log.Fatal(err)
 	}
 
 	mux := httpGrpcMux(httpMux, grpcSrv)
 	httpSrv := &http.Server{
-		Addr:    defPort,
+		Addr:    ":" + defPort,
 		Handler: h2c.NewHandler(mux, &http2.Server{}),
 	}
 

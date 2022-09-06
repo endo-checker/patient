@@ -14,11 +14,11 @@ type Store struct {
 	locaColl *mongo.Collection
 }
 
-// retrives environment variables 
+// retrives environment variables
 func LoadEnv(env string) (uri string) {
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		log.Println("Error loading .env file")
 	}
 	uri = os.Getenv(env)
 	return uri

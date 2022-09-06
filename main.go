@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 
 	"net/http"
@@ -20,9 +21,9 @@ import (
 	"github.com/endo-checker/patient/store"
 )
 
-const defPort = ":8080"
-
 func main() {
+	defPort := store.LoadEnv("port")
+	
 	grpcSrv := grpc.NewServer()
 	defer grpcSrv.Stop()         // stop server on exit
 	reflection.Register(grpcSrv) // for postman
@@ -33,11 +34,12 @@ func main() {
 
 	hm := gw.WithIncomingHeaderMatcher(func(key string) (string, bool) {
 		switch key {
-		// case "X-Token-C-Tenant", "X-Token-C-User", "Permissions":
-		// 	return key, true
+		case "X-Token-C-Tenant", "X-Token-C-User", "Permissions":
+			return key, true
 		default:
 			return gw.DefaultHeaderMatcher(key)
 		}
+
 	})
 
 	mo := gw.WithMarshalerOption("*", &gw.JSONPb{
@@ -69,6 +71,7 @@ func httpGrpcMux(httpHandler http.Handler, grpcServer *grpc.Server) http.Handler
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.ProtoMajor == 2 && strings.Contains(r.Header.Get("Content-Type"), "application/grpc") {
 			grpcServer.ServeHTTP(w, r)
+			fmt.Println(r)
 		} else {
 			httpHandler.ServeHTTP(w, r)
 		}

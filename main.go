@@ -48,7 +48,6 @@ func main() {
 
 	pb.RegisterPatientServiceServer(grpcSrv, h)
 	httpMux := gw.NewServeMux(hm, mo)
-
 	dopts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
 	if err := pb.RegisterPatientServiceHandlerFromEndpoint(context.Background(), httpMux, defPort, dopts); err != nil {
 		log.Fatal(err)

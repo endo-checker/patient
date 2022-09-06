@@ -33,7 +33,7 @@ service PatientService {
     };
   };
 
-  // UpdateRequest is used to specify a customer to update.
+  // UpdateRequest is used to specify a patient to update.
   rpc Update(UpdateRequest) returns (UpdateResponse){
      option (google.api.http) = {
         put : "/v1/{patient.id}"

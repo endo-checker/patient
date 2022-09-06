@@ -50,6 +50,12 @@
             "format": "int64"
           },
           {
+            "name": "searchText",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
             "name": "givenNames",
             "in": "query",
             "required": false,

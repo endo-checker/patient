@@ -11,6 +11,7 @@ import (
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/reflection"
 	"google.golang.org/protobuf/encoding/protojson"
 
@@ -32,8 +33,8 @@ func main() {
 
 	hm := gw.WithIncomingHeaderMatcher(func(key string) (string, bool) {
 		switch key {
-		case "X-Token-C-Tenant", "X-Token-C-User", "Permissions":
-			return key, true
+		// case "X-Token-C-Tenant", "X-Token-C-User", "Permissions":
+		// 	return key, true
 		default:
 			return gw.DefaultHeaderMatcher(key)
 		}
@@ -48,7 +49,7 @@ func main() {
 	pb.RegisterPatientServiceServer(grpcSrv, h)
 	httpMux := gw.NewServeMux(hm, mo)
 
-	dopts := []grpc.DialOption{grpc.WithInsecure()}
+	dopts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
 	if err := pb.RegisterPatientServiceHandlerFromEndpoint(context.Background(), httpMux, defPort, dopts); err != nil {
 		log.Fatal(err)
 	}

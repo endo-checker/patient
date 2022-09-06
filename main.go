@@ -2,9 +2,7 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
-
 	"net/http"
 	"strings"
 
@@ -23,7 +21,7 @@ import (
 
 func main() {
 	defPort := store.LoadEnv("port")
-	
+
 	grpcSrv := grpc.NewServer()
 	defer grpcSrv.Stop()         // stop server on exit
 	reflection.Register(grpcSrv) // for postman
@@ -71,7 +69,6 @@ func httpGrpcMux(httpHandler http.Handler, grpcServer *grpc.Server) http.Handler
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.ProtoMajor == 2 && strings.Contains(r.Header.Get("Content-Type"), "application/grpc") {
 			grpcServer.ServeHTTP(w, r)
-			fmt.Println(r)
 		} else {
 			httpHandler.ServeHTTP(w, r)
 		}

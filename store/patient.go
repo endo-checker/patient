@@ -6,6 +6,7 @@ import (
 	"log"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"google.golang.org/grpc/metadata"
@@ -32,16 +33,11 @@ func (s Store) AddPatient(p *pb.Patient, md metadata.MD) error {
 func (s Store) QueryPatient(qr *pb.QueryRequest, md metadata.MD) ([]*pb.Patient, int64, error) {
 	var filter bson.M
 
-	if qr.SpecialistId != "" {
-		filter = bson.M{"$text": bson.M{"$search": `"` + qr.SpecialistId + `"`}}
-	}
-
-	if qr.GivenNames != "" {
-		filter = bson.M{"$text": bson.M{"$search": `"` + qr.GivenNames + `"`}}
-	}
-
-	if qr.FamilyName != "" {
-		filter = bson.M{"$text": bson.M{"$search": `"` + qr.FamilyName + `"`}}
+	if qr.SearchText != "" {
+		filter = bson.M{"$and": bson.A{filter,
+			bson.M{"$or": bson.A{bson.M{"patient.family_name": primitive.Regex{Pattern: qr.SearchText, Options: "i"}}}},
+			bson.M{"$or": bson.A{bson.M{"patient.given_names": primitive.Regex{Pattern: qr.SearchText, Options: "i"}}}},
+		}}
 	}
 
 	opt := options.FindOptions{

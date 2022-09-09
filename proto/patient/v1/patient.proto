@@ -59,8 +59,9 @@ message QueryRequest  {
   int64 offset = 1 [ (validate.rules).int64.gte = 0 ];
   int64 limit = 2 [ (validate.rules).int64.gte = 0 ];
   string search_text = 3;
-  string specialist_id = 4; 
-  string external_ref = 5;
+  string given_names = 4;
+  string family_name = 5; 
+  string specialist_id = 6; 
 }
 // QueryResponse returns a paged list of patients
 message QueryResponse  { 

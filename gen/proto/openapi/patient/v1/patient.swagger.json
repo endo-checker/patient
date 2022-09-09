@@ -56,13 +56,19 @@
             "type": "string"
           },
           {
-            "name": "specialistId",
+            "name": "givenNames",
             "in": "query",
             "required": false,
             "type": "string"
           },
           {
-            "name": "externalRef",
+            "name": "familyName",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "specialistId",
             "in": "query",
             "required": false,
             "type": "string"

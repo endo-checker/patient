@@ -37,8 +37,7 @@ func (s Store) QueryPatient(qr *pb.QueryRequest, md metadata.MD) ([]*pb.Patient,
 	}
 
 	if qr.SearchText != "" {
-		filter = bson.M{"$text": bson.M{"$search": `"` + qr.GivenNames + `"`}}
-		filter = bson.M{"$text": bson.M{"$search": `"` + qr.FamilyName + `"`}}
+		filter = bson.M{"$text": bson.M{"$search": `"` + qr.SearchText + `"`}}
 	}
 
 	opt := options.FindOptions{

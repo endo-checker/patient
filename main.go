@@ -4,10 +4,11 @@ import (
 	"context"
 	"log"
 	"net/http"
-	"os"
+	"regexp"
 	"strings"
 
 	gw "github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"github.com/spf13/viper"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 	"google.golang.org/grpc"
@@ -21,7 +22,8 @@ import (
 )
 
 func main() {
-	defPort := os.Getenv("PORT")
+	// defPort := os.Getenv("PORT")
+	defPort := "8080"
 
 	grpcSrv := grpc.NewServer()
 	defer grpcSrv.Stop()         // stop server on exit
@@ -70,7 +72,24 @@ func httpGrpcMux(httpHandler http.Handler, grpcServer *grpc.Server) http.Handler
 		if r.ProtoMajor == 2 && strings.Contains(r.Header.Get("Content-Type"), "application/grpc") {
 			grpcServer.ServeHTTP(w, r)
 		} else {
+			if allowedOrigin(r.Header.Get("Origin")) {
+				w.Header().Set("Access-Control-Allow-Origin", r.Header.Get("Origin"))
+				w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, Authorization, ResponseType")
+			}
+			if r.Method == "OPTIONS" {
+				return
+			}
 			httpHandler.ServeHTTP(w, r)
 		}
 	})
+}
+
+func allowedOrigin(origin string) bool {
+	if viper.GetString("cors") == "*" {
+		return true
+	}
+	if matched, _ := regexp.MatchString(viper.GetString("cors"), origin); matched {
+		return true
+	}
+	return false
 }

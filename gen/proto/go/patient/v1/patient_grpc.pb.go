@@ -24,7 +24,7 @@ type PatientServiceClient interface {
 	Query(ctx context.Context, in *QueryRequest, opts ...grpc.CallOption) (*QueryResponse, error)
 	// retrieving patient.
 	Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error)
-	// UpdateRequest is used to specify a customer to update.
+	// UpdateRequest is used to specify a patient to update.
 	Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error)
 	// Delete removes patients
 	Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error)
@@ -93,7 +93,7 @@ type PatientServiceServer interface {
 	Query(context.Context, *QueryRequest) (*QueryResponse, error)
 	// retrieving patient.
 	Get(context.Context, *GetRequest) (*GetResponse, error)
-	// UpdateRequest is used to specify a customer to update.
+	// UpdateRequest is used to specify a patient to update.
 	Update(context.Context, *UpdateRequest) (*UpdateResponse, error)
 	// Delete removes patients
 	Delete(context.Context, *DeleteRequest) (*DeleteResponse, error)

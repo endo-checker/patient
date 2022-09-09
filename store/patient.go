@@ -35,8 +35,10 @@ func (s Store) QueryPatient(qr *pb.QueryRequest, md metadata.MD) ([]*pb.Patient,
 
 	if qr.SearchText != "" {
 		filter = bson.M{"$and": bson.A{filter,
-			bson.M{"$or": bson.A{bson.M{"patient.family_name": primitive.Regex{Pattern: qr.SearchText, Options: "i"}}}},
-			bson.M{"$or": bson.A{bson.M{"patient.given_names": primitive.Regex{Pattern: qr.SearchText, Options: "i"}}}},
+			bson.M{"$or": bson.A{bson.M{"patient.family_name": primitive.Regex{Pattern: qr.SearchText, Options: "i"}},
+				bson.M{"entity.externalRef": primitive.Regex{Pattern: qr.SearchText, Options: "i"}}}},
+			bson.M{"$or": bson.A{bson.M{"patient.given_names": primitive.Regex{Pattern: qr.SearchText, Options: "i"}},
+				bson.M{"entity.externalRef": primitive.Regex{Pattern: qr.SearchText, Options: "i"}}}},
 		}}
 	}
 

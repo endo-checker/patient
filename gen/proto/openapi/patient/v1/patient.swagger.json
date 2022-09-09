@@ -56,19 +56,13 @@
             "type": "string"
           },
           {
-            "name": "givenNames",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "familyName",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
             "name": "specialistId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "externalRef",
             "in": "query",
             "required": false,
             "type": "string"
@@ -172,7 +166,7 @@
     },
     "/v1/{patient.id}": {
       "put": {
-        "summary": "UpdateRequest is used to specify a customer to update.",
+        "summary": "UpdateRequest is used to specify a patient to update.",
         "operationId": "PatientService_Update",
         "responses": {
           "200": {

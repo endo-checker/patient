@@ -353,11 +353,9 @@ func (m *QueryRequest) validate(all bool) error {
 
 	// no validation rules for SearchText
 
-	// no validation rules for GivenNames
-
-	// no validation rules for FamilyName
-
 	// no validation rules for SpecialistId
+
+	// no validation rules for ExternalRef
 
 	if len(errors) > 0 {
 		return QueryRequestMultiError(errors)

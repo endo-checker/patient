@@ -109,16 +109,91 @@ message Patient {
 
 // All the medical info available for each patient
 message MedicalDetails  {
-    // determines the severity of a symptom 
-  enum Risk {
-    RISK_UNSPECIFIED = 0; 
-    RISK_LOW = 1;
-    RISK_MODERATE = 2; 
-    RISK_HIGH = 3; 
-    RISK_SEVERE = 4;
-  }
-  Risk abdomen_pain = 1 [ (validate.rules).enum.defined_only = true ]; 
-  Risk cyst_ruptures = 2 [ (validate.rules).enum.defined_only = true ]; 
-  string surgeries = 3; 
-
+  PainTypes pain_types = 1; 
+  bool nausea = 2; 
+  bool vomitting = 3; 
+  bool bloating = 4; 
+  EmotionalState emotional_state = 5; 
+  bool body_aches = 6; 
+  bool energy = 7;
+  string skin_changes = 8;
+  AppetieChanges appetite = 9; 
+  string focus_levels = 10;
 }
+ // determines what kind of pain patient has
+message PainTypes {
+    // Pain intensity
+    enum Pain {
+        PAIN_UNSPECIFIED = 0; 
+        PAIN_MILD = 1;
+        PAIN_MODERATE = 2; 
+        PAIN_HIGH = 3; 
+        PAIN_SEVERE = 4;
+        PAIN_CHRONIC = 5; 
+      }
+      // determines whether it impacts day to day life 
+      enum Response {
+        RESPONSE_UNSPECIFIED= 0; 
+        RESPONSE_MANAGEABLE = 1; 
+        RESPONSE_CHALLENGING = 2; 
+        RESPONSE_UNMANAGEABLE = 3; 
+      }
+      // determines whether pain is normal for patient
+      enum Normality {
+        NORMALITY_UNSPECIFIED= 0; 
+        NORMALITY_INFREQUENT = 1; 
+        NORMALITY_SOMETIMES = 2; 
+        NORMALITY_FREQUENT = 3; 
+      }
+      // cramping details
+      message Cramping {
+        Pain intensity = 1; 
+        Response response = 2;
+        Normality normality = 3; 
+      }
+       // throbbing details
+      message Throbbing {
+        Pain intensity = 1; 
+        Response response = 2;
+        Normality normality = 3; 
+      }
+      // Tightning details
+      message Tightning {
+        Pain intensity = 1; 
+        Response response = 2;
+        Normality normality = 3; 
+      }
+      // stabbing
+      message Stabbing {
+        Pain intensity = 1; 
+        Response response = 2;
+        Normality normality = 3; 
+      }
+    Cramping cramping = 1; 
+    Throbbing throbbing = 2;  
+    Tightning  tightning = 3;
+    Stabbing stabbing = 4;
+    string additional_notes = 5;
+  } 
+// emotional state
+message EmotionalState {
+  // emotion scale
+  enum Emotions {
+    EMOTIONS_UNSPECIFIED= 0; 
+    EMOTIONS_LOWER = 1; 
+    EMOTIONS_HIGHER = 2; 
+  }
+  Emotions emotions = 1;
+  string additional_notes = 2; 
+} 
+// appetite
+message AppetieChanges {
+  // emotion scale
+  enum Appetite {
+    APPETITE_UNSPECIFIED= 0; 
+    APPETITE_LOWER = 1; 
+    APPETITE_HIGHER = 2; 
+  }
+  Appetite appetite = 1; 
+  string additional_notes = 2; 
+} 

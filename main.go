@@ -22,8 +22,8 @@ import (
 )
 
 func main() {
-	// defPort := os.Getenv("PORT")
-	defPort := "8080"
+	defPort := os.Getenv("PORT")
+	// defPort := "8080"
 
 	grpcSrv := grpc.NewServer()
 	defer grpcSrv.Stop()         // stop server on exit

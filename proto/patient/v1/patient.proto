@@ -118,7 +118,7 @@ message MedicalDetails  {
   bool energy = 7;
   string skin_changes = 8;
   AppetieChanges appetite = 9; 
-  string focus_levels = 10;
+  string focus_levels = 10; 
 }
  // determines what kind of pain patient has
 message PainTypes {

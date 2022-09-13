@@ -30,7 +30,7 @@ func (s Store) AddPatient(p *pb.Patient, md metadata.MD) error {
 }
 
 func (s Store) QueryPatient(qr *pb.QueryRequest, md metadata.MD) ([]*pb.Patient, int64, error) {
-	var filter bson.M
+	filter := bson.M{}
 
 	if qr.SpecialistId != "" {
 		filter = bson.M{"$text": bson.M{"$search": `"` + qr.SpecialistId + `"`}}

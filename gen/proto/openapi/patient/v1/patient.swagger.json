@@ -483,6 +483,13 @@
         },
         "focusLevels": {
           "type": "string"
+        },
+        "surgeries": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "iconColor": {
+          "type": "string"
         }
       },
       "title": "All the medical info available for each patient"

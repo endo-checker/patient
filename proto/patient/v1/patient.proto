@@ -118,6 +118,8 @@ message MedicalDetails  {
   string skin_changes = 7;
   AppetieChanges appetite = 8; 
   string focus_levels = 9; 
+  int32 surgeries = 10;
+  string icon_color = 11;
 }
  // determines what kind of pain patient has
 message PainTypes {

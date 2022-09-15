@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 
+	rc "github.com/AvraamMavridis/randomcolor"
 	"github.com/google/uuid"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
@@ -27,6 +28,7 @@ func (p PatientServer) Create(ctx context.Context, req *pb.CreateRequest) (*pb.C
 	ptnt := req.Patient
 	ptnt.Id = uuid.NewString()
 	ptnt.CreatedAt = timestamppb.Now()
+	ptnt.IconColor = rc.GetRandomColorInHex()
 
 	if err := p.Store.AddPatient(ptnt, md); err != nil {
 		return &pb.CreateResponse{}, status.Errorf(codes.Aborted, "%v", err)

@@ -39,6 +39,7 @@ require (
 )
 
 require (
+	github.com/AvraamMavridis/randomcolor v0.0.0-20180822172341-208aff70bf2c
 	github.com/dapr/dapr v1.8.4 // indirect
 	github.com/dapr/go-sdk v1.5.0
 	github.com/felixge/httpsnoop v1.0.3

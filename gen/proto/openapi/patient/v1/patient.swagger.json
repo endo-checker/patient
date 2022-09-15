@@ -401,6 +401,9 @@
         },
         "additionalNotes": {
           "type": "string"
+        },
+        "approximateDate": {
+          "type": "string"
         }
       },
       "title": "appetite"
@@ -435,6 +438,9 @@
         },
         "additionalNotes": {
           "type": "string"
+        },
+        "approximateDate": {
+          "type": "string"
         }
       },
       "title": "emotional state"
@@ -454,14 +460,11 @@
         "painTypes": {
           "$ref": "#/definitions/v1PainTypes"
         },
-        "nausea": {
+        "sickness": {
           "type": "boolean"
         },
-        "vomitting": {
-          "type": "boolean"
-        },
-        "bloating": {
-          "type": "boolean"
+        "sicknessDetails": {
+          "$ref": "#/definitions/v1Sickness"
         },
         "emotionalState": {
           "$ref": "#/definitions/v1EmotionalState"
@@ -557,6 +560,27 @@
         }
       },
       "title": "QueryResponse returns a paged list of patients"
+    },
+    "v1Sickness": {
+      "type": "object",
+      "properties": {
+        "nausea": {
+          "type": "boolean"
+        },
+        "vomitting": {
+          "type": "boolean"
+        },
+        "bloating": {
+          "type": "boolean"
+        },
+        "additionalNotes": {
+          "type": "string"
+        },
+        "approximateDate": {
+          "type": "string"
+        }
+      },
+      "title": "determines how patient feels with sickness"
     },
     "v1UpdateResponse": {
       "type": "object",

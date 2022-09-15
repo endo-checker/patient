@@ -110,15 +110,14 @@ message Patient {
 // All the medical info available for each patient
 message MedicalDetails  {
   PainTypes pain_types = 1; 
-  bool nausea = 2; 
-  bool vomitting = 3; 
-  bool bloating = 4; 
-  EmotionalState emotional_state = 5; 
-  bool body_aches = 6; 
-  bool energy = 7;
-  string skin_changes = 8;
-  AppetieChanges appetite = 9; 
-  string focus_levels = 10; 
+  bool sickness = 2; 
+  Sickness sickness_details = 3;
+  EmotionalState emotional_state = 4; 
+  bool body_aches = 5; 
+  bool energy = 6;
+  string skin_changes = 7;
+  AppetieChanges appetite = 8; 
+  string focus_levels = 9; 
 }
  // determines what kind of pain patient has
 message PainTypes {
@@ -175,6 +174,15 @@ message PainTypes {
     Stabbing stabbing = 4;
     string additional_notes = 5;
   } 
+
+// determines how patient feels with sickness
+message Sickness {
+  bool nausea = 1; 
+  bool vomitting = 2; 
+  bool bloating = 3; 
+  string additional_notes = 4;
+  string approximate_date = 5;
+}
 // emotional state
 message EmotionalState {
   // emotion scale
@@ -185,6 +193,7 @@ message EmotionalState {
   }
   Emotions emotions = 1;
   string additional_notes = 2; 
+  string approximate_date = 3;
 } 
 // appetite
 message AppetieChanges {
@@ -196,4 +205,5 @@ message AppetieChanges {
   }
   Appetite appetite = 1; 
   string additional_notes = 2; 
+  string approximate_date = 3;
 } 

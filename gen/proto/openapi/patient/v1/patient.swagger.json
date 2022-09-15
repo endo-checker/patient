@@ -232,6 +232,9 @@
                     },
                     "specialistId": {
                       "type": "string"
+                    },
+                    "iconColor": {
+                      "type": "string"
                     }
                   },
                   "title": "patient represents a platform patient uploaded by a specialist"
@@ -487,9 +490,6 @@
         "surgeries": {
           "type": "integer",
           "format": "int32"
-        },
-        "iconColor": {
-          "type": "string"
         }
       },
       "title": "All the medical info available for each patient"
@@ -547,6 +547,9 @@
           "$ref": "#/definitions/v1MedicalDetails"
         },
         "specialistId": {
+          "type": "string"
+        },
+        "iconColor": {
           "type": "string"
         }
       },

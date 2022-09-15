@@ -1479,6 +1479,8 @@ func (m *Patient) validate(all bool) error {
 
 	// no validation rules for SpecialistId
 
+	// no validation rules for IconColor
+
 	if len(errors) > 0 {
 		return PatientMultiError(errors)
 	}
@@ -1717,8 +1719,6 @@ func (m *MedicalDetails) validate(all bool) error {
 	// no validation rules for FocusLevels
 
 	// no validation rules for Surgeries
-
-	// no validation rules for IconColor
 
 	if len(errors) > 0 {
 		return MedicalDetailsMultiError(errors)

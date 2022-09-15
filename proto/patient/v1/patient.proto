@@ -120,6 +120,7 @@ message MedicalDetails  {
   AppetieChanges appetite = 8; 
   string focus_levels = 9; 
   int32 surgeries = 10;
+  Risk risk = 11;
 }
  // determines what kind of pain patient has
 message PainTypes {
@@ -209,3 +210,11 @@ message AppetieChanges {
   string additional_notes = 2; 
   string approximate_date = 3;
 } 
+
+// defines overrall patient risk
+enum Risk {
+  RISK_UNSPECIFIED = 0; 
+  RISK_LOW = 1; 
+  RISK_MEDIUM = 2; 
+  RISK_HIGH = 3; 
+}

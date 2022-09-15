@@ -490,6 +490,9 @@
         "surgeries": {
           "type": "integer",
           "format": "int32"
+        },
+        "risk": {
+          "$ref": "#/definitions/v1Risk"
         }
       },
       "title": "All the medical info available for each patient"
@@ -570,6 +573,17 @@
         }
       },
       "title": "QueryResponse returns a paged list of patients"
+    },
+    "v1Risk": {
+      "type": "string",
+      "enum": [
+        "RISK_UNSPECIFIED",
+        "RISK_LOW",
+        "RISK_MEDIUM",
+        "RISK_HIGH"
+      ],
+      "default": "RISK_UNSPECIFIED",
+      "title": "defines overrall patient risk"
     },
     "v1Sickness": {
       "type": "object",

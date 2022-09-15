@@ -1720,6 +1720,8 @@ func (m *MedicalDetails) validate(all bool) error {
 
 	// no validation rules for Surgeries
 
+	// no validation rules for Risk
+
 	if len(errors) > 0 {
 		return MedicalDetailsMultiError(errors)
 	}

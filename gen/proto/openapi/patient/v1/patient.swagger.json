@@ -54,24 +54,6 @@
             "in": "query",
             "required": false,
             "type": "string"
-          },
-          {
-            "name": "givenNames",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "familyName",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "specialistId",
-            "in": "query",
-            "required": false,
-            "type": "string"
           }
         ],
         "tags": [

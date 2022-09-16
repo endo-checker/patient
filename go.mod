@@ -12,6 +12,7 @@ require (
 )
 
 require (
+	github.com/endo-checker/common v0.0.0-20220916031018-424f11755b72 // indirect
 	github.com/fsnotify/fsnotify v1.5.4 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect

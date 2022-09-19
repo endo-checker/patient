@@ -2,13 +2,13 @@ package handler
 
 import (
 	"context"
+	"time"
 
 	rc "github.com/AvraamMavridis/randomcolor"
 	"github.com/google/uuid"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
-	"google.golang.org/protobuf/types/known/timestamppb"
 
 	pb "github.com/endo-checker/patient/gen/proto/go/patient/v1"
 	"github.com/endo-checker/patient/store"
@@ -27,7 +27,7 @@ func (p PatientServer) Create(ctx context.Context, req *pb.CreateRequest) (*pb.C
 
 	ptnt := req.Patient
 	ptnt.Id = uuid.NewString()
-	ptnt.CreatedAt = timestamppb.Now()
+	ptnt.CreatedAt = time.Now().Unix()
 	ptnt.IconColor = rc.GetRandomColorInHex()
 
 	if err := p.Store.AddPatient(ptnt, md); err != nil {

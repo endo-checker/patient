@@ -99,7 +99,7 @@ message Patient {
     ignore_empty : true,
     pattern : "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$"
   } ];
-  google.protobuf.Timestamp created_at = 8; 
+  int64 created_at = 8; 
   MedicalDetails medical_details = 9;
   string specialist_id = 10;
   string icon_color = 11;

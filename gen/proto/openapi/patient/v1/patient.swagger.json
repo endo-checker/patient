@@ -207,7 +207,7 @@
                     },
                     "createdAt": {
                       "type": "string",
-                      "format": "date-time"
+                      "format": "int64"
                     },
                     "medicalDetails": {
                       "$ref": "#/definitions/v1MedicalDetails"
@@ -526,7 +526,7 @@
         },
         "createdAt": {
           "type": "string",
-          "format": "date-time"
+          "format": "int64"
         },
         "medicalDetails": {
           "$ref": "#/definitions/v1MedicalDetails"

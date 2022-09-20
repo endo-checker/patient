@@ -5,7 +5,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 
 	pb "github.com/dapr/dapr/pkg/proto/runtime/v1"
@@ -55,7 +54,11 @@ func (d CallbackServer) OnTopicEvent(ctx context.Context, in *pb.TopicEventReque
 	return &pb.TopicEventResponse{}, nil
 }
 
+// creates a new tenant on Auth0
 func createAuthUser(email, nickname, id string) {
+
+	url := store.LoadEnv("AUTH0_DOMAIN")
+	key := store.LoadEnv("AUTH_CLIENT_ID")
 
 	data := map[string]string{
 		"client_id": id,
@@ -67,24 +70,19 @@ func createAuthUser(email, nickname, id string) {
 		"password":      "Wfbuebf45YYvche",
 		"connection":    "Username-Password-Authentication",
 		"picture":       "http://example.org/jdoe.png",
-		"client_id":     "JKv5m5C6LYyIaObQMvgJ8tn4fBnvHDFR",
+		"client_id":     key,
 		"user_metadata": data,
 	}
 
 	json_data, _ := json.Marshal(values)
 
-	url := store.LoadEnv("AUTH0_DOMAIN")
 	req, _ := http.NewRequest("POST", "https://"+url+"/dbconnections/signup", bytes.NewBuffer(json_data))
-	req.Header.Set("X-Custom-Header", "myvalue")
 	req.Header.Set("Content-Type", "application/json")
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
 	defer resp.Body.Close()
-
-	body, _ := ioutil.ReadAll(resp.Body)
-	fmt.Println("response Body:", string(body))
 }

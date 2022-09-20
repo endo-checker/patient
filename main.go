@@ -5,7 +5,10 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
+	daprpb "github.com/dapr/dapr/pkg/proto/runtime/v1"
+	dapr "github.com/dapr/go-sdk/client"
 	gw "github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
@@ -22,6 +25,13 @@ import (
 )
 
 func main() {
+	time.Sleep(2 * time.Second)
+	client, err := dapr.NewClient()
+	if err != nil {
+		log.Fatalf("failed to initialise Dapr client: %v", err)
+	}
+	defer client.Close()
+
 	defPort := os.Getenv("PORT")
 	if defPort == "" {
 		defPort = "8080"
@@ -33,7 +43,11 @@ func main() {
 
 	h := &handler.PatientServer{
 		Store: store.Connect(),
+		Dapr:  client,
 	}
+
+	ch := handler.CallbackServer{}
+	daprpb.RegisterAppCallbackServer(grpcSrv, ch)
 
 	hm := gw.WithIncomingHeaderMatcher(func(key string) (string, bool) {
 		switch key {

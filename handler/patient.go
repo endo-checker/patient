@@ -5,6 +5,7 @@ import (
 	"time"
 
 	rc "github.com/AvraamMavridis/randomcolor"
+	dapr "github.com/dapr/go-sdk/client"
 	"github.com/google/uuid"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
@@ -15,6 +16,7 @@ import (
 )
 
 type PatientServer struct {
+	Dapr  dapr.Client
 	Store store.Storer
 	pb.UnimplementedPatientServiceServer
 }
@@ -30,9 +32,18 @@ func (p PatientServer) Create(ctx context.Context, req *pb.CreateRequest) (*pb.C
 	ptnt.CreatedAt = time.Now().Unix()
 	ptnt.IconColor = rc.GetRandomColorInHex()
 
+	if err := p.Dapr.PublishEvent(
+		context.Background(),
+		"pubsubsrv", "create", ptnt,
+		dapr.PublishEventWithContentType("application/json"),
+	); err != nil {
+		return &pb.CreateResponse{}, status.Errorf(codes.Aborted, "%s", "error publishing event")
+	}
+
 	if err := p.Store.AddPatient(ptnt, md); err != nil {
 		return &pb.CreateResponse{}, status.Errorf(codes.Aborted, "%v", err)
 	}
+
 	return &pb.CreateResponse{Patient: ptnt}, nil
 }
 

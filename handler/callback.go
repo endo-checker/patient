@@ -45,7 +45,7 @@ func (d CallbackServer) OnTopicEvent(ctx context.Context, in *pb.TopicEventReque
 
 	switch in.Path {
 	case "/create":
-		createAuthUser(p.Email, p.GivenNames, p.Id)
+		createAuthUser(p.GivenNames, p.FamilyName, p.Email, p.Id)
 	default:
 		return &pb.TopicEventResponse{},
 			status.Errorf(codes.Aborted, "unexpected path in OnTopicEvent: %s", in.Path)
@@ -55,7 +55,7 @@ func (d CallbackServer) OnTopicEvent(ctx context.Context, in *pb.TopicEventReque
 }
 
 // creates a new tenant on Auth0
-func createAuthUser(email, nickname, id string) {
+func createAuthUser(givenName, familyName, email, id string) {
 
 	url := store.LoadEnv("AUTH0_DOMAIN")
 	key := store.LoadEnv("AUTH_CLIENT_ID")
@@ -65,11 +65,11 @@ func createAuthUser(email, nickname, id string) {
 	}
 
 	values := map[string]interface{}{
-		"nickname":      nickname,
+		"given_name":    givenName,
+		"family_name":   familyName,
 		"email":         email,
 		"password":      "Wfbuebf45YYvche",
 		"connection":    "Username-Password-Authentication",
-		"picture":       "http://example.org/jdoe.png",
 		"client_id":     key,
 		"user_metadata": data,
 	}

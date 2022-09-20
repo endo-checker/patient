@@ -17,14 +17,15 @@ import (
 	"google.golang.org/grpc/reflection"
 	"google.golang.org/protobuf/encoding/protojson"
 
+	sv "github.com/endo-checker/common/server"
 	pb "github.com/endo-checker/patient/gen/proto/go/patient/v1"
 	"github.com/endo-checker/patient/handler"
 	"github.com/endo-checker/patient/store"
-
-	sv "github.com/endo-checker/common/server"
 )
 
 func main() {
+
+	// initiate dapr
 	time.Sleep(2 * time.Second)
 	client, err := dapr.NewClient()
 	if err != nil {
@@ -32,6 +33,7 @@ func main() {
 	}
 	defer client.Close()
 
+	// initiate port
 	defPort := os.Getenv("PORT")
 	if defPort == "" {
 		defPort = "8080"

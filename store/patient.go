@@ -14,7 +14,7 @@ import (
 )
 
 type Storer interface {
-	AddPatient(u *pb.Patient, md metadata.MD) error
+	AddPatient(p *pb.Patient, md metadata.MD) error
 	QueryPatient(qr *pb.QueryRequest, md metadata.MD) ([]*pb.Patient, int64, error)
 	GetPatient(id string, md metadata.MD) (*pb.Patient, error)
 	UpdatePatient(id string, md metadata.MD, u *pb.Patient) error
@@ -26,6 +26,7 @@ func (s Store) AddPatient(p *pb.Patient, md metadata.MD) error {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	return err
 }
 

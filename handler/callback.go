@@ -61,7 +61,7 @@ func createAuthUser(givenName, familyName, email, id string) {
 	key := store.LoadEnv("AUTH_CLIENT_ID")
 
 	data := map[string]string{
-		"client_id": id,
+		"patient_id": id,
 	}
 
 	values := map[string]interface{}{

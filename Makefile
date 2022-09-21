@@ -34,3 +34,8 @@ kill:
 .PHONY: test
 test:
 	go test -v ./handler/...
+	
+.PHONY: flushq
+flushq:
+	docker exec -it dapr_redis redis-cli FLUSHALL
+

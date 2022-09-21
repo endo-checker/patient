@@ -1,7 +1,7 @@
 apiVersion: dapr.io/v2alpha1
 kind: Component
 metadata:
-  name: pubsubsrv
+  name: patient
 spec:
   type: pubsub.redis
   version: v1

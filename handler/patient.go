@@ -34,7 +34,7 @@ func (p PatientServer) Create(ctx context.Context, req *pb.CreateRequest) (*pb.C
 
 	if err := p.Dapr.PublishEvent(
 		context.Background(),
-		"pubsubsrv", "create", ptnt,
+		"patient", "create", ptnt,
 		dapr.PublishEventWithContentType("application/json"),
 	); err != nil {
 		return &pb.CreateResponse{}, status.Errorf(codes.Aborted, "%s", "error publishing event")

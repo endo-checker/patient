@@ -54,7 +54,7 @@ func (d CallbackServer) OnTopicEvent(ctx context.Context, in *pb.TopicEventReque
 	return &pb.TopicEventResponse{}, nil
 }
 
-// creates a new tenant on Auth0
+// Creates a new tenant on Auth0
 func createAuthUser(givenName, familyName, email, id string) {
 
 	url := store.LoadEnv("AUTH0_DOMAIN")

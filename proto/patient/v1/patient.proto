@@ -79,7 +79,7 @@ message UpdateRequest  {
 // UpdateResponse returns an updated patient based on the one provided
 message UpdateResponse { Patient patient = 1; }
 
-// Delete contains information needed to create a new person.
+// Delete contains information needed to remove a patient.
 message DeleteRequest { string id = 1 [ (validate.rules).string.uuid = true ];}
 // DeleteResponse returns an empty response and can be ignored.
 message DeleteResponse {}

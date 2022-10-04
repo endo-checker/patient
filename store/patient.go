@@ -6,6 +6,7 @@ import (
 	"log"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"google.golang.org/grpc/metadata"
@@ -34,7 +35,10 @@ func (s Store) QueryPatient(qr *pb.QueryRequest, md metadata.MD) ([]*pb.Patient,
 	filter := bson.M{}
 
 	if qr.SearchText != "" {
-		filter = bson.M{"$text": bson.M{"$search": `"` + qr.SearchText + `"`}}
+		filter = bson.M{"$and": bson.A{filter,
+			bson.M{"$or": bson.A{
+				bson.M{"givennames": primitive.Regex{Pattern: qr.SearchText, Options: "i"}},
+				bson.M{"familyname": primitive.Regex{Pattern: qr.SearchText, Options: "i"}}}}}}
 	}
 
 	opt := options.FindOptions{

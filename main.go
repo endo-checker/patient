@@ -35,9 +35,9 @@ func main() {
 
 	// initiate port
 	defPort := os.Getenv("PORT")
-	// if defPort == "" {
-	// 	defPort = "8080"
-	// }
+	if defPort == "" {
+		defPort = "8080"
+	}
 
 	grpcSrv := grpc.NewServer()
 	defer grpcSrv.Stop()         // stop server on exit

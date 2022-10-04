@@ -41,6 +41,10 @@ func (s Store) QueryPatient(qr *pb.QueryRequest, md metadata.MD) ([]*pb.Patient,
 				bson.M{"familyname": primitive.Regex{Pattern: qr.SearchText, Options: "i"}}}}}}
 	}
 
+	if qr.AuthId != "" {
+		filter = bson.M{"$and": bson.A{filter, bson.M{"specialistid": qr.AuthId}}}
+	}
+
 	opt := options.FindOptions{
 		Skip:  &qr.Offset,
 		Limit: &qr.Limit,

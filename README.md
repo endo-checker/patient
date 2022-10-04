@@ -2,7 +2,7 @@
 
 This application uses `gRPC` and `proto` to send user data to a database (mongoDB). <br/>
 This uses CRUD functions. <br />
-For now I haven't added any securtity features, or protected my db connection as this is supposed to only showcase the very basics of CRUD functions in gRPC. 
+This service also has a Publish/subscribe method using dapr, a new patient is created in the publish method, which is sent to mongoDB, then the callback function `subscribe` method takes that data and adds that user to auth0 where they can then login to view their information. 
 
 ## Get Started ##
 - Install/update dependencies `go get -u`
@@ -30,18 +30,6 @@ machine go.buf.build login <your Buf username> password <your Buf API key>
 ## Set up Docker ## 
 * To make a build on `docker` run `docker build --tag patient .`
 * To run on docker `docker run -d -p 8080:8080 patient`
-
-## Postman Setup ##
-- Go to New, select gRPC Request
-- Call `localhost:8080`
-- Select the proto definitions file to put into the methods input
-- Make sure server reflection is enabled in methods
-- You can generate example JSON Messages (this is particularly useful when using the CREATE method, make sure the ID field isn't present as this is being     filled in automatically when an entry is created) 
-- When making a GET Request make sure the JSON message only includes existing ID's <br />
- 
-```bash 
-{ "id": "4942b3e9-3699-412a-9f16-01503113178f"}
-```
 
 # Setup Heroku 
 

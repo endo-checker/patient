@@ -117,13 +117,13 @@
         "clientId": {
           "type": "string"
         },
-        "metadata": {
-          "$ref": "#/definitions/v1Metadata"
+        "userMetadata": {
+          "$ref": "#/definitions/v1UserMetadata"
         }
       },
       "title": "conatains the values used for submitting an entry to auth0"
     },
-    "v1Metadata": {
+    "v1UserMetadata": {
       "type": "object",
       "properties": {
         "patientId": {

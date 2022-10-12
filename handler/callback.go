@@ -73,7 +73,7 @@ func createAuth(ctx context.Context, givenName, familyName, email, id string) (*
 		Password:   "Wfbuebf45YYvche",
 		Connection: "Username-Password-Authentication",
 		ClientId:   key,
-		Metadata: &pbauth.Metadata{
+		UserMetadata: &pbauth.UserMetadata{
 			PatientId: id,
 			Role:      "patient",
 		},

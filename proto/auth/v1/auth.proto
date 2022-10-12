@@ -32,11 +32,11 @@ message AuthUser {
     string password = 4;
     string connection  = 5;
     string client_id = 6;
-    Metadata metadata = 7;
+    UserMetadata user_metadata = 7;
 
 }
 // nested map
-message Metadata {
+message UserMetadata {
     string patient_id = 1; 
     string role = 2; 
 }

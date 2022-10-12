@@ -73,7 +73,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1CreateResponse"
+              "$ref": "#/definitions/patientv1CreateResponse"
             }
           },
           "default": {
@@ -89,7 +89,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/v1CreateRequest"
+              "$ref": "#/definitions/patientv1CreateRequest"
             }
           }
         ],
@@ -357,6 +357,24 @@
       },
       "title": "Tightning details"
     },
+    "patientv1CreateRequest": {
+      "type": "object",
+      "properties": {
+        "patient": {
+          "$ref": "#/definitions/v1Patient"
+        }
+      },
+      "description": "Create contains information needed to create a new patient."
+    },
+    "patientv1CreateResponse": {
+      "type": "object",
+      "properties": {
+        "patient": {
+          "$ref": "#/definitions/v1Patient"
+        }
+      },
+      "description": "CreateResponse returns the newly created patient for the Create method."
+    },
     "protobufAny": {
       "type": "object",
       "properties": {
@@ -398,24 +416,6 @@
         }
       },
       "title": "appetite"
-    },
-    "v1CreateRequest": {
-      "type": "object",
-      "properties": {
-        "patient": {
-          "$ref": "#/definitions/v1Patient"
-        }
-      },
-      "description": "Create contains information needed to create a new patient."
-    },
-    "v1CreateResponse": {
-      "type": "object",
-      "properties": {
-        "patient": {
-          "$ref": "#/definitions/v1Patient"
-        }
-      },
-      "description": "CreateResponse returns the newly created patient for the Create method."
     },
     "v1DeleteResponse": {
       "type": "object",

@@ -4,17 +4,19 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	pb "github.com/dapr/dapr/pkg/proto/runtime/v1"
+
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/types/known/emptypb"
 
+	sv "github.com/endo-checker/common/store"
+	pbauth "github.com/endo-checker/patient/gen/proto/go/auth/v1"
 	pbsub "github.com/endo-checker/patient/gen/proto/go/patient/v1"
-	"github.com/endo-checker/patient/store"
 )
 
 type CallbackServer struct {
@@ -45,7 +47,7 @@ func (d CallbackServer) OnTopicEvent(ctx context.Context, in *pb.TopicEventReque
 
 	switch in.Path {
 	case "/create":
-		createAuthUser(p.GivenNames, p.FamilyName, p.Email, p.Id)
+		createAuth(ctx, p.GivenNames, p.FamilyName, p.Email, p.Id)
 	default:
 		return &pb.TopicEventResponse{},
 			status.Errorf(codes.Aborted, "unexpected path in OnTopicEvent: %s", in.Path)
@@ -55,34 +57,37 @@ func (d CallbackServer) OnTopicEvent(ctx context.Context, in *pb.TopicEventReque
 }
 
 // Creates a new tenant on Auth0
-func createAuthUser(givenName, familyName, email, id string) {
-
-	url := store.LoadEnv("AUTH0_DOMAIN")
-	key := store.LoadEnv("AUTH_CLIENT_ID")
-
-	data := map[string]string{
-		"patient_id": id,
+func createAuth(ctx context.Context, givenName, familyName, email, id string) (*pbauth.CreateResponse, error) {
+	_, ok := metadata.FromIncomingContext(ctx)
+	if !ok {
+		return &pbauth.CreateResponse{}, status.Errorf(codes.Aborted, "%s", "no incoming context")
 	}
 
-	values := map[string]interface{}{
-		"given_name":    givenName,
-		"family_name":   familyName,
-		"email":         email,
-		"password":      "Wfbuebf45YYvche",
-		"connection":    "Username-Password-Authentication",
-		"client_id":     key,
-		"user_metadata": data,
+	url := sv.LoadEnv("AUTH0_DOMAIN")
+	key := sv.LoadEnv("AUTH_CLIENT_ID")
+
+	authUser := &pbauth.AuthUser{
+		GivenName:  givenName,
+		FamilyName: familyName,
+		Email:      email,
+		Password:   "Wfbuebf45YYvche",
+		Connection: "Username-Password-Authentication",
+		ClientId:   key,
+		Metadata: &pbauth.Metadata{
+			PatientId: id,
+			Role:      "patient",
+		},
 	}
 
-	json_data, _ := json.Marshal(values)
+	json_data, _ := json.Marshal(authUser)
 
-	req, _ := http.NewRequest("POST", "https://"+url+"/dbconnections/signup", bytes.NewBuffer(json_data))
-	req.Header.Set("Content-Type", "application/json")
-
+	resp, _ := http.NewRequest("POST", "https://"+url+"/dbconnections/signup", bytes.NewBuffer(json_data))
+	resp.Header.Set("Content-Type", "application/json")
 	client := &http.Client{}
-	resp, err := client.Do(req)
+
+	_, err := client.Do(resp)
 	if err != nil {
-		fmt.Println(err)
+		return &pbauth.CreateResponse{}, err
 	}
-	defer resp.Body.Close()
+	return &pbauth.CreateResponse{AuthUser: authUser}, nil
 }

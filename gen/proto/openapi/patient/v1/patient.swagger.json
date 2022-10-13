@@ -135,7 +135,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1DeleteResponse"
+              "$ref": "#/definitions/patientv1DeleteResponse"
             }
           },
           "default": {
@@ -375,6 +375,10 @@
       },
       "description": "CreateResponse returns the newly created patient for the Create method."
     },
+    "patientv1DeleteResponse": {
+      "type": "object",
+      "description": "DeleteResponse returns an empty response and can be ignored."
+    },
     "protobufAny": {
       "type": "object",
       "properties": {
@@ -416,10 +420,6 @@
         }
       },
       "title": "appetite"
-    },
-    "v1DeleteResponse": {
-      "type": "object",
-      "description": "DeleteResponse returns an empty response and can be ignored."
     },
     "v1EmotionalState": {
       "type": "object",

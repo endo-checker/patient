@@ -17,12 +17,23 @@ service AuthService {
       body : "*"
     };
   };  
+  // deleting user from auth0.
+  rpc Delete(DeleteRequest) returns (DeleteResponse){
+     option (google.api.http) = {
+      delete : "/v1/{id}"
+    };
+  };
 }
 
 // Create contains information needed to create a new authUser.
 message CreateRequest  { AuthUser auth_user = 1[ (validate.rules).message.required = true ]; }
 // CreateResponse returns the newly created authUser for the Create method.
 message CreateResponse { AuthUser auth_user = 1; }
+
+// DeleteRequest contains information needed to delete an authUser.
+message DeleteRequest { string id = 1 [(validate.rules).string.uuid = true]; }
+// DeleteResponse returns the newly deleted authUser for the Delete method.
+message DeleteResponse { }
 
 // conatains the values used for submitting an entry to auth0 
 message AuthUser { 

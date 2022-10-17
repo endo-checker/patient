@@ -101,115 +101,12 @@ message Patient {
     pattern : "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$"
   } ];
   int64 created_at = 8; 
-  MedicalDetails medical_details = 9;
   string specialist_id = 10;
   string icon_color = 11;
+  Risk risk = 12;
 }
 
-// All the medical info available for each patient
-message MedicalDetails  {
-  PainTypes pain_types = 1; 
-  bool sickness = 2; 
-  Sickness sickness_details = 3;
-  EmotionalState emotional_state = 4; 
-  bool body_aches = 5; 
-  bool energy = 6;
-  string skin_changes = 7;
-  AppetieChanges appetite = 8; 
-  string focus_levels = 9; 
-  int32 surgeries = 10;
-  Risk risk = 11;
-}
- // determines what kind of pain patient has
-message PainTypes {
-    // Pain intensity
-    enum Pain {
-        PAIN_UNSPECIFIED = 0; 
-        PAIN_MILD = 1;
-        PAIN_MODERATE = 2; 
-        PAIN_HIGH = 3; 
-        PAIN_SEVERE = 4;
-        PAIN_CHRONIC = 5; 
-      }
-      // determines whether it impacts day to day life 
-      enum Response {
-        RESPONSE_UNSPECIFIED= 0; 
-        RESPONSE_MANAGEABLE = 1; 
-        RESPONSE_CHALLENGING = 2; 
-        RESPONSE_UNMANAGEABLE = 3; 
-      }
-      // determines whether pain is normal for patient
-      enum Normality {
-        NORMALITY_UNSPECIFIED= 0; 
-        NORMALITY_INFREQUENT = 1; 
-        NORMALITY_SOMETIMES = 2; 
-        NORMALITY_FREQUENT = 3; 
-      }
-      // cramping details
-      message Cramping {
-        Pain intensity = 1; 
-        Response response = 2;
-        Normality normality = 3; 
-      }
-       // throbbing details
-      message Throbbing {
-        Pain intensity = 1; 
-        Response response = 2;
-        Normality normality = 3; 
-      }
-      // Tightning details
-      message Tightning {
-        Pain intensity = 1; 
-        Response response = 2;
-        Normality normality = 3; 
-      }
-      // stabbing
-      message Stabbing {
-        Pain intensity = 1; 
-        Response response = 2;
-        Normality normality = 3; 
-      }
-    Cramping cramping = 1; 
-    Throbbing throbbing = 2;  
-    Tightning  tightning = 3;
-    Stabbing stabbing = 4;
-    string additional_notes = 5;
-  } 
-
-// determines how patient feels with sickness
-message Sickness {
-  bool nausea = 1; 
-  bool vomitting = 2; 
-  bool bloating = 3; 
-  string additional_notes = 4;
-  string approximate_date = 5;
-}
-// emotional state
-message EmotionalState {
-  // emotion scale
-  enum Emotions {
-    EMOTIONS_UNSPECIFIED= 0; 
-    EMOTIONS_LOWER = 1; 
-    EMOTIONS_HIGHER = 2; 
-  }
-  Emotions emotions = 1;
-  string additional_notes = 2; 
-  string approximate_date = 3;
-} 
-// appetite
-message AppetieChanges {
-  // emotion scale
-  enum Appetite {
-    APPETITE_UNSPECIFIED= 0; 
-    APPETITE_LOWER = 1; 
-    APPETITE_HIGHER = 2; 
-  }
-  Appetite appetite = 1; 
-  string additional_notes = 2; 
-  string approximate_date = 3;
-} 
-
-// defines overrall patient risk
+// to determine the risk of a patient
 enum Risk {
   RISK_UNSPECIFIED = 0; 
   RISK_LOW = 1; 

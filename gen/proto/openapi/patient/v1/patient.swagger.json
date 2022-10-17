@@ -215,14 +215,14 @@
                       "type": "string",
                       "format": "int64"
                     },
-                    "medicalDetails": {
-                      "$ref": "#/definitions/v1MedicalDetails"
-                    },
                     "specialistId": {
                       "type": "string"
                     },
                     "iconColor": {
                       "type": "string"
+                    },
+                    "risk": {
+                      "$ref": "#/definitions/v1Risk"
                     }
                   },
                   "title": "patient represents a platform patient uploaded by a specialist"
@@ -242,121 +242,6 @@
     }
   },
   "definitions": {
-    "AppetieChangesAppetite": {
-      "type": "string",
-      "enum": [
-        "APPETITE_UNSPECIFIED",
-        "APPETITE_LOWER",
-        "APPETITE_HIGHER"
-      ],
-      "default": "APPETITE_UNSPECIFIED",
-      "title": "emotion scale"
-    },
-    "EmotionalStateEmotions": {
-      "type": "string",
-      "enum": [
-        "EMOTIONS_UNSPECIFIED",
-        "EMOTIONS_LOWER",
-        "EMOTIONS_HIGHER"
-      ],
-      "default": "EMOTIONS_UNSPECIFIED",
-      "title": "emotion scale"
-    },
-    "PainTypesCramping": {
-      "type": "object",
-      "properties": {
-        "intensity": {
-          "$ref": "#/definitions/PainTypesPain"
-        },
-        "response": {
-          "$ref": "#/definitions/PainTypesResponse"
-        },
-        "normality": {
-          "$ref": "#/definitions/PainTypesNormality"
-        }
-      },
-      "title": "cramping details"
-    },
-    "PainTypesNormality": {
-      "type": "string",
-      "enum": [
-        "NORMALITY_UNSPECIFIED",
-        "NORMALITY_INFREQUENT",
-        "NORMALITY_SOMETIMES",
-        "NORMALITY_FREQUENT"
-      ],
-      "default": "NORMALITY_UNSPECIFIED",
-      "title": "determines whether pain is normal for patient"
-    },
-    "PainTypesPain": {
-      "type": "string",
-      "enum": [
-        "PAIN_UNSPECIFIED",
-        "PAIN_MILD",
-        "PAIN_MODERATE",
-        "PAIN_HIGH",
-        "PAIN_SEVERE",
-        "PAIN_CHRONIC"
-      ],
-      "default": "PAIN_UNSPECIFIED",
-      "title": "Pain intensity"
-    },
-    "PainTypesResponse": {
-      "type": "string",
-      "enum": [
-        "RESPONSE_UNSPECIFIED",
-        "RESPONSE_MANAGEABLE",
-        "RESPONSE_CHALLENGING",
-        "RESPONSE_UNMANAGEABLE"
-      ],
-      "default": "RESPONSE_UNSPECIFIED",
-      "title": "determines whether it impacts day to day life"
-    },
-    "PainTypesStabbing": {
-      "type": "object",
-      "properties": {
-        "intensity": {
-          "$ref": "#/definitions/PainTypesPain"
-        },
-        "response": {
-          "$ref": "#/definitions/PainTypesResponse"
-        },
-        "normality": {
-          "$ref": "#/definitions/PainTypesNormality"
-        }
-      },
-      "title": "stabbing"
-    },
-    "PainTypesThrobbing": {
-      "type": "object",
-      "properties": {
-        "intensity": {
-          "$ref": "#/definitions/PainTypesPain"
-        },
-        "response": {
-          "$ref": "#/definitions/PainTypesResponse"
-        },
-        "normality": {
-          "$ref": "#/definitions/PainTypesNormality"
-        }
-      },
-      "title": "throbbing details"
-    },
-    "PainTypesTightning": {
-      "type": "object",
-      "properties": {
-        "intensity": {
-          "$ref": "#/definitions/PainTypesPain"
-        },
-        "response": {
-          "$ref": "#/definitions/PainTypesResponse"
-        },
-        "normality": {
-          "$ref": "#/definitions/PainTypesNormality"
-        }
-      },
-      "title": "Tightning details"
-    },
     "patientv1CreateRequest": {
       "type": "object",
       "properties": {
@@ -406,36 +291,6 @@
         }
       }
     },
-    "v1AppetieChanges": {
-      "type": "object",
-      "properties": {
-        "appetite": {
-          "$ref": "#/definitions/AppetieChangesAppetite"
-        },
-        "additionalNotes": {
-          "type": "string"
-        },
-        "approximateDate": {
-          "type": "string"
-        }
-      },
-      "title": "appetite"
-    },
-    "v1EmotionalState": {
-      "type": "object",
-      "properties": {
-        "emotions": {
-          "$ref": "#/definitions/EmotionalStateEmotions"
-        },
-        "additionalNotes": {
-          "type": "string"
-        },
-        "approximateDate": {
-          "type": "string"
-        }
-      },
-      "title": "emotional state"
-    },
     "v1GetResponse": {
       "type": "object",
       "properties": {
@@ -444,67 +299,6 @@
         }
       },
       "title": "GetResponse returns an patient based on the patient id"
-    },
-    "v1MedicalDetails": {
-      "type": "object",
-      "properties": {
-        "painTypes": {
-          "$ref": "#/definitions/v1PainTypes"
-        },
-        "sickness": {
-          "type": "boolean"
-        },
-        "sicknessDetails": {
-          "$ref": "#/definitions/v1Sickness"
-        },
-        "emotionalState": {
-          "$ref": "#/definitions/v1EmotionalState"
-        },
-        "bodyAches": {
-          "type": "boolean"
-        },
-        "energy": {
-          "type": "boolean"
-        },
-        "skinChanges": {
-          "type": "string"
-        },
-        "appetite": {
-          "$ref": "#/definitions/v1AppetieChanges"
-        },
-        "focusLevels": {
-          "type": "string"
-        },
-        "surgeries": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "risk": {
-          "$ref": "#/definitions/v1Risk"
-        }
-      },
-      "title": "All the medical info available for each patient"
-    },
-    "v1PainTypes": {
-      "type": "object",
-      "properties": {
-        "cramping": {
-          "$ref": "#/definitions/PainTypesCramping"
-        },
-        "throbbing": {
-          "$ref": "#/definitions/PainTypesThrobbing"
-        },
-        "tightning": {
-          "$ref": "#/definitions/PainTypesTightning"
-        },
-        "stabbing": {
-          "$ref": "#/definitions/PainTypesStabbing"
-        },
-        "additionalNotes": {
-          "type": "string"
-        }
-      },
-      "title": "determines what kind of pain patient has"
     },
     "v1Patient": {
       "type": "object",
@@ -534,14 +328,14 @@
           "type": "string",
           "format": "int64"
         },
-        "medicalDetails": {
-          "$ref": "#/definitions/v1MedicalDetails"
-        },
         "specialistId": {
           "type": "string"
         },
         "iconColor": {
           "type": "string"
+        },
+        "risk": {
+          "$ref": "#/definitions/v1Risk"
         }
       },
       "title": "patient represents a platform patient uploaded by a specialist"
@@ -571,28 +365,7 @@
         "RISK_HIGH"
       ],
       "default": "RISK_UNSPECIFIED",
-      "title": "defines overrall patient risk"
-    },
-    "v1Sickness": {
-      "type": "object",
-      "properties": {
-        "nausea": {
-          "type": "boolean"
-        },
-        "vomitting": {
-          "type": "boolean"
-        },
-        "bloating": {
-          "type": "boolean"
-        },
-        "additionalNotes": {
-          "type": "string"
-        },
-        "approximateDate": {
-          "type": "string"
-        }
-      },
-      "title": "determines how patient feels with sickness"
+      "title": "to determine the risk of a patient"
     },
     "v1UpdateResponse": {
       "type": "object",

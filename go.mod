@@ -4,9 +4,9 @@ go 1.19
 
 require (
 	github.com/AvraamMavridis/randomcolor v0.0.0-20180822172341-208aff70bf2c
-	github.com/dapr/dapr v1.9.5
-	github.com/dapr/go-sdk v1.6.0
-	github.com/endo-checker/common v0.1.207
+	github.com/dapr/dapr v1.7.4
+	github.com/dapr/go-sdk v1.4.0
+	github.com/endo-checker/common v0.1.208
 	github.com/google/uuid v1.3.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.14.0
 	github.com/joho/godotenv v1.4.0

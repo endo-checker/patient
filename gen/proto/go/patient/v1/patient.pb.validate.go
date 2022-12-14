@@ -1423,6 +1423,43 @@ func (m *Patient) validate(all bool) error {
 
 	// no validation rules for Risk
 
+	// no validation rules for BloodType
+
+	// no validation rules for Height
+
+	// no validation rules for Weight
+
+	if all {
+		switch v := interface{}(m.GetAddress()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, PatientValidationError{
+					field:  "Address",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, PatientValidationError{
+					field:  "Address",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetAddress()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return PatientValidationError{
+				field:  "Address",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	// no validation rules for PhoneNumber
+
 	if len(errors) > 0 {
 		return PatientMultiError(errors)
 	}
@@ -1511,3 +1548,109 @@ var _ interface {
 var _Patient_DateOfBirth_Pattern = regexp.MustCompile("^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$")
 
 var _Patient_InitialAppointmentDate_Pattern = regexp.MustCompile("^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$")
+
+// Validate checks the field values on Address with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *Address) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on Address with the rules defined in the
+// proto definition for this message. If any rules are violated, the result is
+// a list of violation errors wrapped in AddressMultiError, or nil if none found.
+func (m *Address) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *Address) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Street
+
+	// no validation rules for City
+
+	// no validation rules for State
+
+	// no validation rules for Zip
+
+	if len(errors) > 0 {
+		return AddressMultiError(errors)
+	}
+
+	return nil
+}
+
+// AddressMultiError is an error wrapping multiple validation errors returned
+// by Address.ValidateAll() if the designated constraints aren't met.
+type AddressMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m AddressMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m AddressMultiError) AllErrors() []error { return m }
+
+// AddressValidationError is the validation error returned by Address.Validate
+// if the designated constraints aren't met.
+type AddressValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e AddressValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e AddressValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e AddressValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e AddressValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e AddressValidationError) ErrorName() string { return "AddressValidationError" }
+
+// Error satisfies the builtin error interface
+func (e AddressValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sAddress.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = AddressValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = AddressValidationError{}

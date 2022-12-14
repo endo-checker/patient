@@ -104,6 +104,19 @@ message Patient {
   string specialist_id = 10;
   string icon_color = 11;
   Risk risk = 12;
+  string blood_type = 13;
+  string height = 14;
+  string weight = 15;
+  Address address = 16;
+  string phone_number = 17;
+}
+
+// address is a message that represents a patient address
+message Address {
+  string street = 1;
+  string city = 2;
+  string state = 3;
+  string zip = 4;
 }
 
 // to determine the risk of a patient

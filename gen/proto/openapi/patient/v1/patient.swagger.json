@@ -223,6 +223,21 @@
                     },
                     "risk": {
                       "$ref": "#/definitions/v1Risk"
+                    },
+                    "bloodType": {
+                      "type": "string"
+                    },
+                    "height": {
+                      "type": "string"
+                    },
+                    "weight": {
+                      "type": "string"
+                    },
+                    "address": {
+                      "$ref": "#/definitions/v1Address"
+                    },
+                    "phoneNumber": {
+                      "type": "string"
                     }
                   },
                   "title": "patient represents a platform patient uploaded by a specialist"
@@ -291,6 +306,24 @@
         }
       }
     },
+    "v1Address": {
+      "type": "object",
+      "properties": {
+        "street": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "zip": {
+          "type": "string"
+        }
+      },
+      "title": "address is a message that represents a patient address"
+    },
     "v1GetResponse": {
       "type": "object",
       "properties": {
@@ -336,6 +369,21 @@
         },
         "risk": {
           "$ref": "#/definitions/v1Risk"
+        },
+        "bloodType": {
+          "type": "string"
+        },
+        "height": {
+          "type": "string"
+        },
+        "weight": {
+          "type": "string"
+        },
+        "address": {
+          "$ref": "#/definitions/v1Address"
+        },
+        "phoneNumber": {
+          "type": "string"
         }
       },
       "title": "patient represents a platform patient uploaded by a specialist"

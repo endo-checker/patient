@@ -595,17 +595,22 @@ type Patient struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id                     string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	GivenNames             string `protobuf:"bytes,2,opt,name=given_names,json=givenNames,proto3" json:"given_names,omitempty"`
-	FamilyName             string `protobuf:"bytes,3,opt,name=family_name,json=familyName,proto3" json:"family_name,omitempty"`
-	DateOfBirth            string `protobuf:"bytes,4,opt,name=date_of_birth,json=dateOfBirth,proto3" json:"date_of_birth,omitempty"`
-	NhiNumber              string `protobuf:"bytes,5,opt,name=nhi_number,json=nhiNumber,proto3" json:"nhi_number,omitempty"`
-	Email                  string `protobuf:"bytes,6,opt,name=email,proto3" json:"email,omitempty"`
-	InitialAppointmentDate string `protobuf:"bytes,7,opt,name=initial_appointment_date,json=initialAppointmentDate,proto3" json:"initial_appointment_date,omitempty"`
-	CreatedAt              int64  `protobuf:"varint,8,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	SpecialistId           string `protobuf:"bytes,10,opt,name=specialist_id,json=specialistId,proto3" json:"specialist_id,omitempty"`
-	IconColor              string `protobuf:"bytes,11,opt,name=icon_color,json=iconColor,proto3" json:"icon_color,omitempty"`
-	Risk                   Risk   `protobuf:"varint,12,opt,name=risk,proto3,enum=patient.v1.Risk" json:"risk,omitempty"`
+	Id                     string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	GivenNames             string   `protobuf:"bytes,2,opt,name=given_names,json=givenNames,proto3" json:"given_names,omitempty"`
+	FamilyName             string   `protobuf:"bytes,3,opt,name=family_name,json=familyName,proto3" json:"family_name,omitempty"`
+	DateOfBirth            string   `protobuf:"bytes,4,opt,name=date_of_birth,json=dateOfBirth,proto3" json:"date_of_birth,omitempty"`
+	NhiNumber              string   `protobuf:"bytes,5,opt,name=nhi_number,json=nhiNumber,proto3" json:"nhi_number,omitempty"`
+	Email                  string   `protobuf:"bytes,6,opt,name=email,proto3" json:"email,omitempty"`
+	InitialAppointmentDate string   `protobuf:"bytes,7,opt,name=initial_appointment_date,json=initialAppointmentDate,proto3" json:"initial_appointment_date,omitempty"`
+	CreatedAt              int64    `protobuf:"varint,8,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	SpecialistId           string   `protobuf:"bytes,10,opt,name=specialist_id,json=specialistId,proto3" json:"specialist_id,omitempty"`
+	IconColor              string   `protobuf:"bytes,11,opt,name=icon_color,json=iconColor,proto3" json:"icon_color,omitempty"`
+	Risk                   Risk     `protobuf:"varint,12,opt,name=risk,proto3,enum=patient.v1.Risk" json:"risk,omitempty"`
+	BloodType              string   `protobuf:"bytes,13,opt,name=blood_type,json=bloodType,proto3" json:"blood_type,omitempty"`
+	Height                 string   `protobuf:"bytes,14,opt,name=height,proto3" json:"height,omitempty"`
+	Weight                 string   `protobuf:"bytes,15,opt,name=weight,proto3" json:"weight,omitempty"`
+	Address                *Address `protobuf:"bytes,16,opt,name=address,proto3" json:"address,omitempty"`
+	PhoneNumber            string   `protobuf:"bytes,17,opt,name=phone_number,json=phoneNumber,proto3" json:"phone_number,omitempty"`
 }
 
 func (x *Patient) Reset() {
@@ -717,6 +722,113 @@ func (x *Patient) GetRisk() Risk {
 	return Risk_RISK_UNSPECIFIED
 }
 
+func (x *Patient) GetBloodType() string {
+	if x != nil {
+		return x.BloodType
+	}
+	return ""
+}
+
+func (x *Patient) GetHeight() string {
+	if x != nil {
+		return x.Height
+	}
+	return ""
+}
+
+func (x *Patient) GetWeight() string {
+	if x != nil {
+		return x.Weight
+	}
+	return ""
+}
+
+func (x *Patient) GetAddress() *Address {
+	if x != nil {
+		return x.Address
+	}
+	return nil
+}
+
+func (x *Patient) GetPhoneNumber() string {
+	if x != nil {
+		return x.PhoneNumber
+	}
+	return ""
+}
+
+// address is a message that represents a patient address
+type Address struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Street string `protobuf:"bytes,1,opt,name=street,proto3" json:"street,omitempty"`
+	City   string `protobuf:"bytes,2,opt,name=city,proto3" json:"city,omitempty"`
+	State  string `protobuf:"bytes,3,opt,name=state,proto3" json:"state,omitempty"`
+	Zip    string `protobuf:"bytes,4,opt,name=zip,proto3" json:"zip,omitempty"`
+}
+
+func (x *Address) Reset() {
+	*x = Address{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_patient_v1_patient_proto_msgTypes[11]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Address) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Address) ProtoMessage() {}
+
+func (x *Address) ProtoReflect() protoreflect.Message {
+	mi := &file_patient_v1_patient_proto_msgTypes[11]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Address.ProtoReflect.Descriptor instead.
+func (*Address) Descriptor() ([]byte, []int) {
+	return file_patient_v1_patient_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *Address) GetStreet() string {
+	if x != nil {
+		return x.Street
+	}
+	return ""
+}
+
+func (x *Address) GetCity() string {
+	if x != nil {
+		return x.City
+	}
+	return ""
+}
+
+func (x *Address) GetState() string {
+	if x != nil {
+		return x.State
+	}
+	return ""
+}
+
+func (x *Address) GetZip() string {
+	if x != nil {
+		return x.Zip
+	}
+	return ""
+}
+
 var File_patient_v1_patient_proto protoreflect.FileDescriptor
 
 var file_patient_v1_patient_proto_rawDesc = []byte{
@@ -777,7 +889,7 @@ var file_patient_v1_patient_proto_rawDesc = []byte{
 	0x65, 0x73, 0x74, 0x12, 0x18, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42,
 	0x08, 0xfa, 0x42, 0x05, 0x72, 0x03, 0xb0, 0x01, 0x01, 0x52, 0x02, 0x69, 0x64, 0x22, 0x10, 0x0a,
 	0x0e, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22,
-	0x92, 0x04, 0x0a, 0x07, 0x50, 0x61, 0x74, 0x69, 0x65, 0x6e, 0x74, 0x12, 0x1b, 0x0a, 0x02, 0x69,
+	0xb3, 0x05, 0x0a, 0x07, 0x50, 0x61, 0x74, 0x69, 0x65, 0x6e, 0x74, 0x12, 0x1b, 0x0a, 0x02, 0x69,
 	0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x0b, 0xfa, 0x42, 0x08, 0x72, 0x06, 0xd0, 0x01,
 	0x01, 0xb0, 0x01, 0x01, 0x52, 0x02, 0x69, 0x64, 0x12, 0x2a, 0x0a, 0x0b, 0x67, 0x69, 0x76, 0x65,
 	0x6e, 0x5f, 0x6e, 0x61, 0x6d, 0x65, 0x73, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x42, 0x09, 0xfa,
@@ -810,7 +922,23 @@ var file_patient_v1_patient_proto_rawDesc = []byte{
 	0x01, 0x28, 0x09, 0x52, 0x09, 0x69, 0x63, 0x6f, 0x6e, 0x43, 0x6f, 0x6c, 0x6f, 0x72, 0x12, 0x24,
 	0x0a, 0x04, 0x72, 0x69, 0x73, 0x6b, 0x18, 0x0c, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x10, 0x2e, 0x70,
 	0x61, 0x74, 0x69, 0x65, 0x6e, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x52, 0x69, 0x73, 0x6b, 0x52, 0x04,
-	0x72, 0x69, 0x73, 0x6b, 0x2a, 0x4a, 0x0a, 0x04, 0x52, 0x69, 0x73, 0x6b, 0x12, 0x14, 0x0a, 0x10,
+	0x72, 0x69, 0x73, 0x6b, 0x12, 0x1d, 0x0a, 0x0a, 0x62, 0x6c, 0x6f, 0x6f, 0x64, 0x5f, 0x74, 0x79,
+	0x70, 0x65, 0x18, 0x0d, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x62, 0x6c, 0x6f, 0x6f, 0x64, 0x54,
+	0x79, 0x70, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x68, 0x65, 0x69, 0x67, 0x68, 0x74, 0x18, 0x0e, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x06, 0x68, 0x65, 0x69, 0x67, 0x68, 0x74, 0x12, 0x16, 0x0a, 0x06, 0x77,
+	0x65, 0x69, 0x67, 0x68, 0x74, 0x18, 0x0f, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x77, 0x65, 0x69,
+	0x67, 0x68, 0x74, 0x12, 0x2d, 0x0a, 0x07, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x18, 0x10,
+	0x20, 0x01, 0x28, 0x0b, 0x32, 0x13, 0x2e, 0x70, 0x61, 0x74, 0x69, 0x65, 0x6e, 0x74, 0x2e, 0x76,
+	0x31, 0x2e, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x52, 0x07, 0x61, 0x64, 0x64, 0x72, 0x65,
+	0x73, 0x73, 0x12, 0x21, 0x0a, 0x0c, 0x70, 0x68, 0x6f, 0x6e, 0x65, 0x5f, 0x6e, 0x75, 0x6d, 0x62,
+	0x65, 0x72, 0x18, 0x11, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0b, 0x70, 0x68, 0x6f, 0x6e, 0x65, 0x4e,
+	0x75, 0x6d, 0x62, 0x65, 0x72, 0x22, 0x5d, 0x0a, 0x07, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73,
+	0x12, 0x16, 0x0a, 0x06, 0x73, 0x74, 0x72, 0x65, 0x65, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x06, 0x73, 0x74, 0x72, 0x65, 0x65, 0x74, 0x12, 0x12, 0x0a, 0x04, 0x63, 0x69, 0x74, 0x79,
+	0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x63, 0x69, 0x74, 0x79, 0x12, 0x14, 0x0a, 0x05,
+	0x73, 0x74, 0x61, 0x74, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x73, 0x74, 0x61,
+	0x74, 0x65, 0x12, 0x10, 0x0a, 0x03, 0x7a, 0x69, 0x70, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x03, 0x7a, 0x69, 0x70, 0x2a, 0x4a, 0x0a, 0x04, 0x52, 0x69, 0x73, 0x6b, 0x12, 0x14, 0x0a, 0x10,
 	0x52, 0x49, 0x53, 0x4b, 0x5f, 0x55, 0x4e, 0x53, 0x50, 0x45, 0x43, 0x49, 0x46, 0x49, 0x45, 0x44,
 	0x10, 0x00, 0x12, 0x0c, 0x0a, 0x08, 0x52, 0x49, 0x53, 0x4b, 0x5f, 0x4c, 0x4f, 0x57, 0x10, 0x01,
 	0x12, 0x0f, 0x0a, 0x0b, 0x52, 0x49, 0x53, 0x4b, 0x5f, 0x4d, 0x45, 0x44, 0x49, 0x55, 0x4d, 0x10,
@@ -868,7 +996,7 @@ func file_patient_v1_patient_proto_rawDescGZIP() []byte {
 }
 
 var file_patient_v1_patient_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_patient_v1_patient_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
+var file_patient_v1_patient_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_patient_v1_patient_proto_goTypes = []interface{}{
 	(Risk)(0),                     // 0: patient.v1.Risk
 	(*CreateRequest)(nil),         // 1: patient.v1.CreateRequest
@@ -882,7 +1010,8 @@ var file_patient_v1_patient_proto_goTypes = []interface{}{
 	(*DeleteRequest)(nil),         // 9: patient.v1.DeleteRequest
 	(*DeleteResponse)(nil),        // 10: patient.v1.DeleteResponse
 	(*Patient)(nil),               // 11: patient.v1.Patient
-	(*fieldmaskpb.FieldMask)(nil), // 12: google.protobuf.FieldMask
+	(*Address)(nil),               // 12: patient.v1.Address
+	(*fieldmaskpb.FieldMask)(nil), // 13: google.protobuf.FieldMask
 }
 var file_patient_v1_patient_proto_depIdxs = []int32{
 	11, // 0: patient.v1.CreateRequest.patient:type_name -> patient.v1.Patient
@@ -890,24 +1019,25 @@ var file_patient_v1_patient_proto_depIdxs = []int32{
 	11, // 2: patient.v1.QueryResponse.cursor:type_name -> patient.v1.Patient
 	11, // 3: patient.v1.GetResponse.patient:type_name -> patient.v1.Patient
 	11, // 4: patient.v1.UpdateRequest.patient:type_name -> patient.v1.Patient
-	12, // 5: patient.v1.UpdateRequest.update_mask:type_name -> google.protobuf.FieldMask
+	13, // 5: patient.v1.UpdateRequest.update_mask:type_name -> google.protobuf.FieldMask
 	11, // 6: patient.v1.UpdateResponse.patient:type_name -> patient.v1.Patient
 	0,  // 7: patient.v1.Patient.risk:type_name -> patient.v1.Risk
-	1,  // 8: patient.v1.PatientService.Create:input_type -> patient.v1.CreateRequest
-	3,  // 9: patient.v1.PatientService.Query:input_type -> patient.v1.QueryRequest
-	5,  // 10: patient.v1.PatientService.Get:input_type -> patient.v1.GetRequest
-	7,  // 11: patient.v1.PatientService.Update:input_type -> patient.v1.UpdateRequest
-	9,  // 12: patient.v1.PatientService.Delete:input_type -> patient.v1.DeleteRequest
-	2,  // 13: patient.v1.PatientService.Create:output_type -> patient.v1.CreateResponse
-	4,  // 14: patient.v1.PatientService.Query:output_type -> patient.v1.QueryResponse
-	6,  // 15: patient.v1.PatientService.Get:output_type -> patient.v1.GetResponse
-	8,  // 16: patient.v1.PatientService.Update:output_type -> patient.v1.UpdateResponse
-	10, // 17: patient.v1.PatientService.Delete:output_type -> patient.v1.DeleteResponse
-	13, // [13:18] is the sub-list for method output_type
-	8,  // [8:13] is the sub-list for method input_type
-	8,  // [8:8] is the sub-list for extension type_name
-	8,  // [8:8] is the sub-list for extension extendee
-	0,  // [0:8] is the sub-list for field type_name
+	12, // 8: patient.v1.Patient.address:type_name -> patient.v1.Address
+	1,  // 9: patient.v1.PatientService.Create:input_type -> patient.v1.CreateRequest
+	3,  // 10: patient.v1.PatientService.Query:input_type -> patient.v1.QueryRequest
+	5,  // 11: patient.v1.PatientService.Get:input_type -> patient.v1.GetRequest
+	7,  // 12: patient.v1.PatientService.Update:input_type -> patient.v1.UpdateRequest
+	9,  // 13: patient.v1.PatientService.Delete:input_type -> patient.v1.DeleteRequest
+	2,  // 14: patient.v1.PatientService.Create:output_type -> patient.v1.CreateResponse
+	4,  // 15: patient.v1.PatientService.Query:output_type -> patient.v1.QueryResponse
+	6,  // 16: patient.v1.PatientService.Get:output_type -> patient.v1.GetResponse
+	8,  // 17: patient.v1.PatientService.Update:output_type -> patient.v1.UpdateResponse
+	10, // 18: patient.v1.PatientService.Delete:output_type -> patient.v1.DeleteResponse
+	14, // [14:19] is the sub-list for method output_type
+	9,  // [9:14] is the sub-list for method input_type
+	9,  // [9:9] is the sub-list for extension type_name
+	9,  // [9:9] is the sub-list for extension extendee
+	0,  // [0:9] is the sub-list for field type_name
 }
 
 func init() { file_patient_v1_patient_proto_init() }
@@ -1048,6 +1178,18 @@ func file_patient_v1_patient_proto_init() {
 				return nil
 			}
 		}
+		file_patient_v1_patient_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Address); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -1055,7 +1197,7 @@ func file_patient_v1_patient_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_patient_v1_patient_proto_rawDesc,
 			NumEnums:      1,
-			NumMessages:   11,
+			NumMessages:   12,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -1,17 +1,11 @@
-name: Trigger auto deployment for patient
+name: Deploy Update
 
-# When this action will be executed
 on:
   # Automatically trigger it when detected changes in repo
   push:
-    branches: 
-      [ main ]
-    paths:
-    - 'DockerFile/**'
-    - '.github/workflows/patient-AutoDeployTrigger-d194c17f-32db-4da5-8c7b-0fc383c1d520.yml'
-
-  # Allow mannually trigger 
-  workflow_dispatch:      
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
   build:

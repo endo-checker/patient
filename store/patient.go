@@ -48,7 +48,7 @@ func (s Store) QueryPatient(qr *pb.QueryRequest, md metadata.MD) ([]*pb.Patient,
 	opt := options.FindOptions{
 		Skip:  &qr.Offset,
 		Limit: &qr.Limit,
-		Sort:  bson.M{"medicaldetails.risk": -1},
+		Sort:  bson.M{"risk": -1},
 	}
 
 	ctx := context.Background()

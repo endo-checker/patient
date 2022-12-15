@@ -58,8 +58,8 @@ module app 'containerapp.bicep' = {
 module api 'api.bicep' = {
   name: '${appName}-api'
   params: {
-    apiName: 'customers'
-    displayName: 'Customers'
+    apiName: 'patient'
+    displayName: 'Patient'
     backendName: appName
     apiSpec: loadTextContent('../../gen/proto/openapi/patient/v1/patient.swagger.json')
     apiManagerName: apiManagerName

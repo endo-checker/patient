@@ -5,8 +5,9 @@ on:
   # Automatically trigger it when detected changes in repo
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
+    paths:
+      - "DockerFile/**"
+      - ".github/workflows/workflow.yml"
 
   # Allow mannually trigger
   workflow_dispatch:
@@ -29,15 +30,17 @@ jobs:
         with:
           fetch-depth: 0
 
-      # log in to docker repo (Github container registry)
-      - name: Log in to GitHub container registry
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Log in to container registry
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ secrets.PATIENT_REGISTRY_USERNAME }}
+          password: ${{ secrets.PATIENT_REGISTRY_PASSWORD }}
 
-      - name: Build and push image
+      - name: Build and push container image to registry
         uses: docker/build-push-action@v2
         with:
           context: .
@@ -48,8 +51,9 @@ jobs:
             GH_PAT=${{ secrets.GH_PAT }}
             GH_ORG=${{ github.repository_owner }}
           push: true
-          tags: ${{ steps.tag.outputs.image-tag }}, ${{ env.IMAGE_REPO }}:latest
-
+          tags: github.com/patient:${{ github.sha }}
+          file: ./DockerFile
+          
       - name: Create release
         uses: actions/github-script@v5
         with:

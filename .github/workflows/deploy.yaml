@@ -87,7 +87,7 @@ jobs:
       - name: Generate image tag
         id: tag
         run: |
-          echo "::set-output name=image-tag::${{ env.IMAGE_REPO }}:${{ steps.version.outputs.version_tag }}"
+          echo "name=image-tag::${{ env.IMAGE_REPO }}:${{ steps.version.outputs.version_tag }}" >> $GITHUB_OUTPUT
 
       # build and publish docker image
       - name: Build and push image

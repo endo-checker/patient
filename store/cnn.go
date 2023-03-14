@@ -25,7 +25,7 @@ func LoadEnv(env string) (uri string) {
 }
 
 func Connect() Store {
-	uri := LoadEnv("mongoUri")
+	uri := LoadEnv("MONGO_URI")
 
 	clientOptions := options.Client().ApplyURI(uri)
 	client, err := mongo.Connect(context.Background(), clientOptions)

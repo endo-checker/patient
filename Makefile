@@ -1,9 +1,3 @@
-# load env vars
--include .env
-export mongoUri := $(value mongoUri)
-export AUTH0_DOMAIN := $(value AUTH0_DOMAIN)
-export AUTH0_CLIENT_ID := $(value AUTH0_CLIENT_ID)
-
 # proto generates code from the most recent proto file(s)
 .PHONY: proto
 proto:
@@ -21,11 +15,10 @@ rungo:
 .PHONY: run
 run:
 	dapr run \
-		--app-id messaging \
+		--app-id patient \
 		--app-port 8080 \
-		--app-protocol grpc \
-		--config ./.dapr/config.yaml \
-		--components-path ./.dapr/components \
+		--app-protocol http \
+		
 		go run .
 
 .PHONY: kill

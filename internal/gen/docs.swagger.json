@@ -16,56 +16,7 @@
     "application/json"
   ],
   "paths": {
-    "/v1": {
-      "get": {
-        "summary": "quering patients.",
-        "operationId": "PatientService_Query",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1QueryResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "offset",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "int64"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "int64"
-          },
-          {
-            "name": "searchText",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "authId",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "PatientService"
-        ]
-      },
+    "/Create": {
       "post": {
         "summary": "adding patients.",
         "operationId": "PatientService_Create",
@@ -73,7 +24,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/patientv1CreateResponse"
+              "$ref": "#/definitions/v1CreateResponse"
             }
           },
           "default": {
@@ -86,10 +37,11 @@
         "parameters": [
           {
             "name": "body",
+            "description": "Create contains information needed to create a new patient.",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/patientv1CreateRequest"
+              "$ref": "#/definitions/v1CreateRequest"
             }
           }
         ],
@@ -98,8 +50,42 @@
         ]
       }
     },
-    "/v1/{id}": {
-      "get": {
+    "/Delete": {
+      "post": {
+        "summary": "Delete removes patients",
+        "operationId": "PatientService_Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DeleteResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "Delete contains information needed to remove a patient.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1DeleteRequest"
+            }
+          }
+        ],
+        "tags": [
+          "PatientService"
+        ]
+      }
+    },
+    "/Get": {
+      "post": {
         "summary": "retrieving patient.",
         "operationId": "PatientService_Get",
         "responses": {
@@ -118,24 +104,29 @@
         },
         "parameters": [
           {
-            "name": "id",
-            "in": "path",
+            "name": "body",
+            "description": "Get is used to specify the patient to retrieve.",
+            "in": "body",
             "required": true,
-            "type": "string"
+            "schema": {
+              "$ref": "#/definitions/v1GetRequest"
+            }
           }
         ],
         "tags": [
           "PatientService"
         ]
-      },
-      "delete": {
-        "summary": "Delete removes patients",
-        "operationId": "PatientService_Delete",
+      }
+    },
+    "/Query": {
+      "post": {
+        "summary": "quering patients.",
+        "operationId": "PatientService_Query",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/patientv1DeleteResponse"
+              "$ref": "#/definitions/v1QueryResponse"
             }
           },
           "default": {
@@ -147,10 +138,13 @@
         },
         "parameters": [
           {
-            "name": "id",
-            "in": "path",
+            "name": "body",
+            "description": "Query is used to specify the patient to retrieve.",
+            "in": "body",
             "required": true,
-            "type": "string"
+            "schema": {
+              "$ref": "#/definitions/v1QueryRequest"
+            }
           }
         ],
         "tags": [
@@ -158,8 +152,8 @@
         ]
       }
     },
-    "/v1/{patient.id}": {
-      "put": {
+    "/Update": {
+      "post": {
         "summary": "UpdateRequest is used to specify a patient to update.",
         "operationId": "PatientService_Update",
         "responses": {
@@ -178,75 +172,12 @@
         },
         "parameters": [
           {
-            "name": "patient.id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
             "name": "body",
+            "description": "Update is used to specify a patient to update.",
             "in": "body",
             "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "patient": {
-                  "type": "object",
-                  "properties": {
-                    "givenNames": {
-                      "type": "string"
-                    },
-                    "familyName": {
-                      "type": "string"
-                    },
-                    "dateOfBirth": {
-                      "type": "string"
-                    },
-                    "nhiNumber": {
-                      "type": "string"
-                    },
-                    "email": {
-                      "type": "string"
-                    },
-                    "initialAppointmentDate": {
-                      "type": "string"
-                    },
-                    "createdAt": {
-                      "type": "string",
-                      "format": "int64"
-                    },
-                    "specialistId": {
-                      "type": "string"
-                    },
-                    "iconColor": {
-                      "type": "string"
-                    },
-                    "risk": {
-                      "$ref": "#/definitions/v1Risk"
-                    },
-                    "bloodType": {
-                      "type": "string"
-                    },
-                    "height": {
-                      "type": "string"
-                    },
-                    "weight": {
-                      "type": "string"
-                    },
-                    "address": {
-                      "$ref": "#/definitions/v1Address"
-                    },
-                    "phoneNumber": {
-                      "type": "string"
-                    }
-                  },
-                  "title": "patient represents a platform patient uploaded by a specialist"
-                },
-                "updateMask": {
-                  "type": "string"
-                }
-              },
-              "description": "Update is used to specify a patient to update."
+              "$ref": "#/definitions/v1UpdateRequest"
             }
           }
         ],
@@ -257,28 +188,6 @@
     }
   },
   "definitions": {
-    "patientv1CreateRequest": {
-      "type": "object",
-      "properties": {
-        "patient": {
-          "$ref": "#/definitions/v1Patient"
-        }
-      },
-      "description": "Create contains information needed to create a new patient."
-    },
-    "patientv1CreateResponse": {
-      "type": "object",
-      "properties": {
-        "patient": {
-          "$ref": "#/definitions/v1Patient"
-        }
-      },
-      "description": "CreateResponse returns the newly created patient for the Create method."
-    },
-    "patientv1DeleteResponse": {
-      "type": "object",
-      "description": "DeleteResponse returns an empty response and can be ignored."
-    },
     "protobufAny": {
       "type": "object",
       "properties": {
@@ -323,6 +232,46 @@
         }
       },
       "title": "address is a message that represents a patient address"
+    },
+    "v1CreateRequest": {
+      "type": "object",
+      "properties": {
+        "patient": {
+          "$ref": "#/definitions/v1Patient"
+        }
+      },
+      "description": "Create contains information needed to create a new patient."
+    },
+    "v1CreateResponse": {
+      "type": "object",
+      "properties": {
+        "patient": {
+          "$ref": "#/definitions/v1Patient"
+        }
+      },
+      "description": "CreateResponse returns the newly created patient for the Create method."
+    },
+    "v1DeleteRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      },
+      "description": "Delete contains information needed to remove a patient."
+    },
+    "v1DeleteResponse": {
+      "type": "object",
+      "description": "DeleteResponse returns an empty response and can be ignored."
+    },
+    "v1GetRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      },
+      "description": "Get is used to specify the patient to retrieve."
     },
     "v1GetResponse": {
       "type": "object",
@@ -388,6 +337,26 @@
       },
       "title": "patient represents a platform patient uploaded by a specialist"
     },
+    "v1QueryRequest": {
+      "type": "object",
+      "properties": {
+        "offset": {
+          "type": "string",
+          "format": "int64"
+        },
+        "limit": {
+          "type": "string",
+          "format": "int64"
+        },
+        "searchText": {
+          "type": "string"
+        },
+        "authId": {
+          "type": "string"
+        }
+      },
+      "description": "Query is used to specify the patient to retrieve."
+    },
     "v1QueryResponse": {
       "type": "object",
       "properties": {
@@ -414,6 +383,21 @@
       ],
       "default": "RISK_UNSPECIFIED",
       "title": "to determine the risk of a patient"
+    },
+    "v1UpdateRequest": {
+      "type": "object",
+      "properties": {
+        "patientId": {
+          "type": "string"
+        },
+        "patient": {
+          "$ref": "#/definitions/v1Patient"
+        },
+        "updateMask": {
+          "type": "string"
+        }
+      },
+      "description": "Update is used to specify a patient to update."
     },
     "v1UpdateResponse": {
       "type": "object",

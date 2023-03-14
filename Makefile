@@ -8,18 +8,20 @@ export AUTH0_CLIENT_ID := $(value AUTH0_CLIENT_ID)
 .PHONY: proto
 proto:
 	cd proto && buf mod update
-	buf generate
+	buf lint
+	# buf breaking --against './.git#branch=main,ref=HEAD~1'
 	buf build
+	buf generate
 	cd proto && buf push
 
-.PHONY: rungo
+.PHONY: run
 rungo:
 	go run main.go
 
 .PHONY: run
 run:
 	dapr run \
-		--app-id patient \
+		--app-id messaging \
 		--app-port 8080 \
 		--app-protocol grpc \
 		--config ./.dapr/config.yaml \
@@ -34,8 +36,3 @@ kill:
 .PHONY: test
 test:
 	go test -v ./handler/...
-	
-.PHONY: flushq
-flushq:
-	docker exec -it dapr_redis redis-cli FLUSHALL
-

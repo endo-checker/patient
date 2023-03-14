@@ -837,6 +837,18 @@ func (m *UpdateRequest) validate(all bool) error {
 
 	var errors []error
 
+	if err := m._validateUuid(m.GetPatientId()); err != nil {
+		err = UpdateRequestValidationError{
+			field:  "PatientId",
+			reason: "value must be a valid UUID",
+			cause:  err,
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
 	if all {
 		switch v := interface{}(m.GetPatient()).(type) {
 		case interface{ ValidateAll() error }:
@@ -897,6 +909,14 @@ func (m *UpdateRequest) validate(all bool) error {
 
 	if len(errors) > 0 {
 		return UpdateRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+func (m *UpdateRequest) _validateUuid(uuid string) error {
+	if matched := _patient_uuidPattern.MatchString(uuid); !matched {
+		return errors.New("invalid uuid format")
 	}
 
 	return nil

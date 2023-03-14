@@ -2,107 +2,101 @@ package handler
 
 import (
 	"context"
+	"errors"
+	"regexp"
 	"time"
 
 	rc "github.com/AvraamMavridis/randomcolor"
-	dapr "github.com/dapr/go-sdk/client"
+	"github.com/bufbuild/connect-go"
 	"github.com/google/uuid"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/metadata"
-	"google.golang.org/grpc/status"
 
-	pb "github.com/endo-checker/patient/gen/proto/go/patient/v1"
+	pb "github.com/endo-checker/patient/internal/gen/patient/v1"
+	pbcnn "github.com/endo-checker/patient/internal/gen/patient/v1/patientv1connect"
 	"github.com/endo-checker/patient/store"
 )
 
 type PatientServer struct {
-	Dapr  dapr.Client
 	Store store.Storer
-	pb.UnimplementedPatientServiceServer
+	pbcnn.UnimplementedPatientServiceHandler
 }
 
-func (p PatientServer) Create(ctx context.Context, req *pb.CreateRequest) (*pb.CreateResponse, error) {
-	md, ok := metadata.FromIncomingContext(ctx)
-	if !ok {
-		return &pb.CreateResponse{}, status.Errorf(codes.Aborted, "%s", "no incoming context")
-	}
+func (p PatientServer) Create(ctx context.Context, req *connect.Request[pb.CreateRequest]) (*connect.Response[pb.CreateResponse], error) {
 
-	ptnt := req.Patient
+	reqMsg := req.Msg
+	ptnt := reqMsg.Patient
 	ptnt.Id = uuid.NewString()
 	ptnt.CreatedAt = time.Now().Unix()
 	ptnt.IconColor = rc.GetRandomColorInHex()
 
-	if err := p.Dapr.PublishEvent(
-		context.Background(),
-		"patient", "create", ptnt,
-		dapr.PublishEventWithContentType("application/json"),
-	); err != nil {
-		return &pb.CreateResponse{}, status.Errorf(codes.Aborted, "%s", "error publishing event")
+	if err := p.Store.AddPatient(ctx, ptnt); err != nil {
+		return nil, connect.NewError(connect.CodeAborted, err)
 	}
 
-	if err := p.Store.AddPatient(ptnt, md); err != nil {
-		return &pb.CreateResponse{}, status.Errorf(codes.Aborted, "%v", err)
+	rsp := &pb.CreateResponse{
+		Patient: ptnt,
 	}
-
-	return &pb.CreateResponse{Patient: ptnt}, nil
+	return connect.NewResponse(rsp), nil
 }
 
-func (p PatientServer) Query(ctx context.Context, req *pb.QueryRequest) (*pb.QueryResponse, error) {
-	md, ok := metadata.FromIncomingContext(ctx)
-	if !ok {
-		return &pb.QueryResponse{}, status.Errorf(codes.Aborted, "%s", "no incoming context")
+func (p PatientServer) Query(ctx context.Context, req *connect.Request[pb.QueryRequest]) (*connect.Response[pb.QueryResponse], error) {
+	reqMsg := req.Msg
+
+	if reqMsg.SearchText != "" {
+		pattern, err := regexp.Compile(`^[a-zA-Z@. ]+$`)
+		if err != nil {
+			return nil, connect.NewError(connect.CodeAborted, err)
+		}
+		if !pattern.MatchString(reqMsg.SearchText) {
+			return nil, connect.NewError(connect.CodeInvalidArgument,
+				errors.New("invalid search text format"))
+		}
 	}
 
-	cur, mat, err := p.Store.QueryPatient(req, md)
+	cur, mat, err := p.Store.QueryPatient(ctx, reqMsg)
 	if err != nil {
-		return &pb.QueryResponse{}, status.Errorf(codes.Aborted, "%v", err)
+		return nil, connect.NewError(connect.CodeAborted, err)
 	}
 
-	return &pb.QueryResponse{
+	rsp := &pb.QueryResponse{
 		Cursor:  cur,
 		Matches: mat,
-	}, nil
+	}
+	return connect.NewResponse(rsp), nil
 }
 
-func (p PatientServer) Get(ctx context.Context, req *pb.GetRequest) (*pb.GetResponse, error) {
-	md, ok := metadata.FromIncomingContext(ctx)
-	if !ok {
-		return &pb.GetResponse{}, status.Errorf(codes.Aborted, "%s", "no incoming context")
-	}
+func (p PatientServer) Get(ctx context.Context, req *connect.Request[pb.GetRequest]) (*connect.Response[pb.GetResponse], error) {
+	reqMsg := req.Msg
 
-	ptnt, err := p.Store.GetPatient(req.Id, md)
+	ptnt, err := p.Store.GetPatient(ctx, reqMsg.Id)
 	if err != nil {
-		return &pb.GetResponse{}, status.Errorf(codes.Aborted, "%v", err)
+		return nil, connect.NewError(connect.CodeAborted, err)
 	}
 
-	return &pb.GetResponse{Patient: ptnt}, nil
+	rsp := &pb.GetResponse{
+		Patient: ptnt,
+	}
+	return connect.NewResponse(rsp), nil
 }
 
-func (p PatientServer) Update(ctx context.Context, req *pb.UpdateRequest) (*pb.UpdateResponse, error) {
-	md, ok := metadata.FromIncomingContext(ctx)
-	if !ok {
-		return &pb.UpdateResponse{}, status.Errorf(codes.Aborted, "%s", "no incoming context")
+func (p PatientServer) Update(ctx context.Context, req *connect.Request[pb.UpdateRequest]) (*connect.Response[pb.UpdateResponse], error) {
+	reqMsg := req.Msg
+
+	if err := p.Store.UpdatePatient(reqMsg.PatientId, ctx, reqMsg.Patient); err != nil {
+		return nil, connect.NewError(connect.CodeAborted, err)
 	}
 
-	ptnt := req.Patient
-	id := ptnt.Id
+	rsp := &pb.UpdateResponse{}
+	return connect.NewResponse(rsp), nil
 
-	if err := p.Store.UpdatePatient(id, md, ptnt); err != nil {
-		return &pb.UpdateResponse{}, status.Errorf(codes.Aborted, "%v", err)
-	}
-
-	return &pb.UpdateResponse{Patient: ptnt}, nil
 }
 
-func (p PatientServer) Delete(ctx context.Context, req *pb.DeleteRequest) (*pb.DeleteResponse, error) {
-	md, ok := metadata.FromIncomingContext(ctx)
-	if !ok {
-		return &pb.DeleteResponse{}, status.Errorf(codes.Aborted, "%s", "no incoming context")
+func (p PatientServer) Delete(ctx context.Context, req *connect.Request[pb.DeleteRequest]) (*connect.Response[pb.DeleteResponse], error) {
+	reqMsg := req.Msg
+
+	if err := p.Store.DeletePatient(reqMsg.Id); err != nil {
+		return nil, connect.NewError(connect.CodeAborted, err)
 	}
 
-	if err := p.Store.DeletePatient(req.Id, md); err != nil {
-		return &pb.DeleteResponse{}, status.Errorf(codes.Aborted, "%v", err)
-	}
-
-	return &pb.DeleteResponse{}, nil
+	rsp := &pb.DeleteResponse{}
+	return connect.NewResponse(rsp), nil
 }

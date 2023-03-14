@@ -9,21 +9,20 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"google.golang.org/grpc/metadata"
 
-	pb "github.com/endo-checker/patient/gen/proto/go/patient/v1"
+	pb "github.com/endo-checker/patient/internal/gen/patient/v1"
 )
 
 type Storer interface {
-	AddPatient(p *pb.Patient, md metadata.MD) error
-	QueryPatient(qr *pb.QueryRequest, md metadata.MD) ([]*pb.Patient, int64, error)
-	GetPatient(id string, md metadata.MD) (*pb.Patient, error)
-	UpdatePatient(id string, md metadata.MD, u *pb.Patient) error
-	DeletePatient(id string, md metadata.MD) error
+	AddPatient(ctx context.Context, p *pb.Patient) error
+	QueryPatient(ctx context.Context, qr *pb.QueryRequest) ([]*pb.Patient, int64, error)
+	GetPatient(ctx context.Context, id string) (*pb.Patient, error)
+	UpdatePatient(id string, ctx context.Context, u *pb.Patient) error
+	DeletePatient(id string) error
 }
 
-func (s Store) AddPatient(p *pb.Patient, md metadata.MD) error {
-	_, err := s.locaColl.InsertOne(context.Background(), p)
+func (s Store) AddPatient(ctx context.Context, p *pb.Patient) error {
+	_, err := s.locaColl.InsertOne(ctx, p)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -31,7 +30,7 @@ func (s Store) AddPatient(p *pb.Patient, md metadata.MD) error {
 	return err
 }
 
-func (s Store) QueryPatient(qr *pb.QueryRequest, md metadata.MD) ([]*pb.Patient, int64, error) {
+func (s Store) QueryPatient(ctx context.Context, qr *pb.QueryRequest) ([]*pb.Patient, int64, error) {
 	filter := bson.M{}
 
 	if qr.SearchText != "" {
@@ -51,14 +50,13 @@ func (s Store) QueryPatient(qr *pb.QueryRequest, md metadata.MD) ([]*pb.Patient,
 		Sort:  bson.M{"risk": -1},
 	}
 
-	ctx := context.Background()
 	cursor, err := s.locaColl.Find(ctx, filter, &opt)
 	if err != nil {
 		return nil, 0, err
 	}
 
 	var ptnts []*pb.Patient
-	if err := cursor.All(context.Background(), &ptnts); err != nil {
+	if err := cursor.All(ctx, &ptnts); err != nil {
 		return nil, 0, err
 	}
 
@@ -70,7 +68,7 @@ func (s Store) QueryPatient(qr *pb.QueryRequest, md metadata.MD) ([]*pb.Patient,
 	return ptnts, matches, err
 }
 
-func (s Store) GetPatient(id string, md metadata.MD) (*pb.Patient, error) {
+func (s Store) GetPatient(ctx context.Context, id string) (*pb.Patient, error) {
 	var p pb.Patient
 
 	if err := s.locaColl.FindOne(context.Background(), bson.M{"id": id}).Decode(&p); err != nil {
@@ -83,8 +81,8 @@ func (s Store) GetPatient(id string, md metadata.MD) (*pb.Patient, error) {
 	return &p, nil
 }
 
-func (s Store) UpdatePatient(id string, md metadata.MD, p *pb.Patient) error {
-	insertResult, err := s.locaColl.ReplaceOne(context.Background(), bson.M{"id": id}, p)
+func (s Store) UpdatePatient(id string, ctx context.Context, p *pb.Patient) error {
+	insertResult, err := s.locaColl.ReplaceOne(ctx, bson.M{"id": id}, p)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -93,7 +91,7 @@ func (s Store) UpdatePatient(id string, md metadata.MD, p *pb.Patient) error {
 	return err
 }
 
-func (s Store) DeletePatient(id string, md metadata.MD) error {
+func (s Store) DeletePatient(id string) error {
 	if _, err := s.locaColl.DeleteOne(context.Background(), bson.M{"id": id}); err != nil {
 		return err
 	}

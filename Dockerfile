@@ -23,11 +23,6 @@ RUN apk update  && apk upgrade && apk add --no-cache git
 WORKDIR /src
 COPY . .
 
-# # access to private repos
-# RUN echo "machine github.com login $GH_USER password $GH_PAT" >> ~/.netrc
-# RUN echo "machine go.buf.build login $BUF_USER password $BUF_PAT" >> ~/.netrc
-# RUN go env -w GOPRIVATE="github.com/$GH_ORG/*"
-
 # build as static-linked binary (no external dependencies).
 RUN go mod download
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o /app

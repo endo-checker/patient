@@ -1,3 +1,7 @@
+# load env vars
+-include .env
+export mongouri := $(value mongouri)
+
 # proto generates code from the most recent proto file(s)
 .PHONY: proto
 proto:
@@ -17,8 +21,7 @@ run:
 	dapr run \
 		--app-id patient \
 		--app-port 8080 \
-		--app-protocol http \
-		
+		--app-protocol grpc \
 		go run .
 
 .PHONY: kill

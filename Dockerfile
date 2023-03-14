@@ -23,10 +23,10 @@ RUN apk update  && apk upgrade && apk add --no-cache git
 WORKDIR /src
 COPY . .
 
-# access to private repos
-RUN echo "machine github.com login $GH_USER password $GH_PAT" >> ~/.netrc
-RUN echo "machine go.buf.build login $BUF_USER password $BUF_PAT" >> ~/.netrc
-RUN go env -w GOPRIVATE="github.com/$GH_ORG/*"
+# # access to private repos
+# RUN echo "machine github.com login $GH_USER password $GH_PAT" >> ~/.netrc
+# RUN echo "machine go.buf.build login $BUF_USER password $BUF_PAT" >> ~/.netrc
+# RUN go env -w GOPRIVATE="github.com/$GH_ORG/*"
 
 # build as static-linked binary (no external dependencies).
 RUN go mod download
@@ -39,6 +39,8 @@ COPY --from=builder /etc/passwd /etc/passwd
 COPY --from=builder /etc/group /etc/group
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=builder /app /app
+
+EXPOSE 8080
 
 # perform any further action as an unprivileged user
 USER appuser:appuser

@@ -21,7 +21,6 @@ type PatientServer struct {
 }
 
 func (p PatientServer) Create(ctx context.Context, req *connect.Request[pb.CreateRequest]) (*connect.Response[pb.CreateResponse], error) {
-
 	reqMsg := req.Msg
 	ptnt := reqMsg.Patient
 	ptnt.Id = uuid.NewString()

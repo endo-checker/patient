@@ -8,7 +8,7 @@ on:
       [ main ]
     paths:
     - '**'
-    - '.github/workflows/patient-AutoDeployTrigger-a6b2987d-c945-46e6-8d31-6e4f5e7911de.yml'
+    - '.github/workflows/deploy.yml'
 
   # Allow mannually trigger 
   workflow_dispatch:      

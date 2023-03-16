@@ -18,22 +18,19 @@ type Server struct {
 }
 
 func main() {
-	port := "localhost:8080"
 	godotenv.Load()
+
+	port := os.Getenv("PORT")
 	uri := os.Getenv("MONGO_URI")
 
 	svc := &handler.PatientServer{
 		Store: st.Connect[*patientv1.Patient](uri, "patient"),
 	}
-
 	path, hndlr := pbcnn.NewPatientServiceHandler(svc)
 
-	sv.Server.ConnectServer(
-		sv.Server{
-			ServeMux: &http.ServeMux{},
-		},
-		path,
-		hndlr,
-		port,
-	)
+	srvr := sv.Server{
+		ServeMux: &http.ServeMux{},
+	}
+
+	sv.Server.ConnectServer(srvr, path, hndlr, ":"+port)
 }

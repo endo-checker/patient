@@ -1,6 +1,7 @@
 # load env vars
 -include .env
 export MONGO_URI := $(value MONGO_URI)
+export PORT := $(value PORT)
 
 # proto generates code from the most recent proto file(s)
 .PHONY: proto

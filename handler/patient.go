@@ -2,8 +2,6 @@ package handler
 
 import (
 	"context"
-	"errors"
-	"regexp"
 	"time"
 
 	rc "github.com/AvraamMavridis/randomcolor"
@@ -27,7 +25,7 @@ func (p PatientServer) Create(ctx context.Context, req *connect.Request[pb.Creat
 	ptnt.CreatedAt = time.Now().Unix()
 	ptnt.IconColor = rc.GetRandomColorInHex()
 
-	if err := p.Store.AddPatient(ctx, ptnt); err != nil {
+	if err := p.Store.Create(ctx, ptnt); err != nil {
 		return nil, connect.NewError(connect.CodeAborted, err)
 	}
 
@@ -37,50 +35,48 @@ func (p PatientServer) Create(ctx context.Context, req *connect.Request[pb.Creat
 	return connect.NewResponse(rsp), nil
 }
 
-func (p PatientServer) Query(ctx context.Context, req *connect.Request[pb.QueryRequest]) (*connect.Response[pb.QueryResponse], error) {
-	reqMsg := req.Msg
+// func (p PatientServer) Query(ctx context.Context, req *connect.Request[pb.QueryRequest]) (*connect.Response[pb.QueryResponse], error) {
+// 	reqMsg := req.Msg
 
-	if reqMsg.SearchText != "" {
-		pattern, err := regexp.Compile(`^[a-zA-Z@. ]+$`)
-		if err != nil {
-			return nil, connect.NewError(connect.CodeAborted, err)
-		}
-		if !pattern.MatchString(reqMsg.SearchText) {
-			return nil, connect.NewError(connect.CodeInvalidArgument,
-				errors.New("invalid search text format"))
-		}
-	}
+// 	if reqMsg.SearchText != "" {
+// 		pattern, err := regexp.Compile(`^[a-zA-Z@. ]+$`)
+// 		if err != nil {
+// 			return nil, connect.NewError(connect.CodeAborted, err)
+// 		}
+// 		if !pattern.MatchString(reqMsg.SearchText) {
+// 			return nil, connect.NewError(connect.CodeInvalidArgument,
+// 				errors.New("invalid search text format"))
+// 		}
+// 	}
 
-	cur, mat, err := p.Store.QueryPatient(ctx, reqMsg)
-	if err != nil {
-		return nil, connect.NewError(connect.CodeAborted, err)
-	}
+// 	cur, mat, err := p.Store.QueryPatient(ctx, reqMsg)
+// 	if err != nil {
+// 		return nil, connect.NewError(connect.CodeAborted, err)
+// 	}
 
-	rsp := &pb.QueryResponse{
-		Cursor:  cur,
-		Matches: mat,
-	}
-	return connect.NewResponse(rsp), nil
-}
+// 	rsp := &pb.QueryResponse{
+// 		Cursor:  cur,
+// 		Matches: mat,
+// 	}
+// 	return connect.NewResponse(rsp), nil
+// }
 
 func (p PatientServer) Get(ctx context.Context, req *connect.Request[pb.GetRequest]) (*connect.Response[pb.GetResponse], error) {
 	reqMsg := req.Msg
 
-	ptnt, err := p.Store.GetPatient(ctx, reqMsg.Id)
+	ptnt, err := p.Store.Get(ctx, reqMsg.Id)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeAborted, err)
 	}
 
-	rsp := &pb.GetResponse{
-		Patient: ptnt,
-	}
+	rsp := &pb.GetResponse{Patient: ptnt}
 	return connect.NewResponse(rsp), nil
 }
 
 func (p PatientServer) Update(ctx context.Context, req *connect.Request[pb.UpdateRequest]) (*connect.Response[pb.UpdateResponse], error) {
 	reqMsg := req.Msg
 
-	if err := p.Store.UpdatePatient(reqMsg.PatientId, ctx, reqMsg.Patient); err != nil {
+	if err := p.Store.Update(ctx, reqMsg.PatientId, reqMsg.Patient); err != nil {
 		return nil, connect.NewError(connect.CodeAborted, err)
 	}
 
@@ -92,7 +88,7 @@ func (p PatientServer) Update(ctx context.Context, req *connect.Request[pb.Updat
 func (p PatientServer) Delete(ctx context.Context, req *connect.Request[pb.DeleteRequest]) (*connect.Response[pb.DeleteResponse], error) {
 	reqMsg := req.Msg
 
-	if err := p.Store.DeletePatient(reqMsg.Id); err != nil {
+	if err := p.Store.Delete(ctx, reqMsg.Id); err != nil {
 		return nil, connect.NewError(connect.CodeAborted, err)
 	}
 

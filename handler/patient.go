@@ -60,6 +60,7 @@ func (p PatientServer) Query(ctx context.Context, req *connect.Request[pb.QueryR
 		Cursor:  cur,
 		Matches: mat,
 	}
+
 	return connect.NewResponse(rsp), nil
 }
 

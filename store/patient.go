@@ -7,6 +7,7 @@ import (
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo/options"
 
 	patientv1 "github.com/endo-checker/patient/internal/gen/patient/v1"
 )
@@ -31,11 +32,12 @@ func (s PatientStore) Fetch(ctx context.Context, qr *patientv1.QueryRequest) ([]
 	}
 
 	f := st.WithFilter(filter)
-	// opt := options.FindOptions{
-	// 	Skip:  &qr.Offset,
-	// 	Limit: &qr.Limit,
-	// 	Sort:  bson.M{"risk": -1},
-	// }
 
-	return s.List(ctx, f)
+	fo := st.WithFindOptions(options.FindOptions{
+		Skip:  &qr.Offset,
+		Limit: &qr.Limit,
+		Sort:  bson.M{"risk": -1},
+	})
+
+	return s.List(ctx, f, fo)
 }

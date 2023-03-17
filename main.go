@@ -5,12 +5,11 @@ import (
 	"os"
 
 	sv "github.com/endo-checker/common/server"
-	st "github.com/endo-checker/common/store"
 	"github.com/joho/godotenv"
 
 	"github.com/endo-checker/patient/handler"
-	patientv1 "github.com/endo-checker/patient/internal/gen/patient/v1"
 	pbcnn "github.com/endo-checker/patient/internal/gen/patient/v1/patientv1connect"
+	"github.com/endo-checker/patient/store"
 )
 
 type Server struct {
@@ -24,7 +23,7 @@ func main() {
 	uri := os.Getenv("MONGO_URI")
 
 	svc := &handler.PatientServer{
-		Store: st.Connect[*patientv1.Patient](uri),
+		Store: store.New(uri),
 	}
 	path, hndlr := pbcnn.NewPatientServiceHandler(svc)
 

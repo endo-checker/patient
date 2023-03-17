@@ -2,6 +2,8 @@ package handler
 
 import (
 	"context"
+	"errors"
+	"regexp"
 	"time"
 
 	rc "github.com/AvraamMavridis/randomcolor"
@@ -35,31 +37,31 @@ func (p PatientServer) Create(ctx context.Context, req *connect.Request[pb.Creat
 	return connect.NewResponse(rsp), nil
 }
 
-// func (p PatientServer) Query(ctx context.Context, req *connect.Request[pb.QueryRequest]) (*connect.Response[pb.QueryResponse], error) {
-// 	reqMsg := req.Msg
+func (p PatientServer) Query(ctx context.Context, req *connect.Request[pb.QueryRequest]) (*connect.Response[pb.QueryResponse], error) {
+	reqMsg := req.Msg
 
-// 	if reqMsg.SearchText != "" {
-// 		pattern, err := regexp.Compile(`^[a-zA-Z@. ]+$`)
-// 		if err != nil {
-// 			return nil, connect.NewError(connect.CodeAborted, err)
-// 		}
-// 		if !pattern.MatchString(reqMsg.SearchText) {
-// 			return nil, connect.NewError(connect.CodeInvalidArgument,
-// 				errors.New("invalid search text format"))
-// 		}
-// 	}
+	if reqMsg.SearchText != "" {
+		pattern, err := regexp.Compile(`^[a-zA-Z@. ]+$`)
+		if err != nil {
+			return nil, connect.NewError(connect.CodeAborted, err)
+		}
+		if !pattern.MatchString(reqMsg.SearchText) {
+			return nil, connect.NewError(connect.CodeInvalidArgument,
+				errors.New("invalid search text format"))
+		}
+	}
 
-// 	cur, mat, err := p.Store.QueryPatient(ctx, reqMsg)
-// 	if err != nil {
-// 		return nil, connect.NewError(connect.CodeAborted, err)
-// 	}
+	cur, mat, err := p.Store.Fetch(ctx, reqMsg)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeAborted, err)
+	}
 
-// 	rsp := &pb.QueryResponse{
-// 		Cursor:  cur,
-// 		Matches: mat,
-// 	}
-// 	return connect.NewResponse(rsp), nil
-// }
+	rsp := &pb.QueryResponse{
+		Cursor:  cur,
+		Matches: mat,
+	}
+	return connect.NewResponse(rsp), nil
+}
 
 func (p PatientServer) Get(ctx context.Context, req *connect.Request[pb.GetRequest]) (*connect.Response[pb.GetResponse], error) {
 	reqMsg := req.Msg
@@ -80,7 +82,9 @@ func (p PatientServer) Update(ctx context.Context, req *connect.Request[pb.Updat
 		return nil, connect.NewError(connect.CodeAborted, err)
 	}
 
-	rsp := &pb.UpdateResponse{}
+	rsp := &pb.UpdateResponse{
+		Patient: reqMsg.Patient,
+	}
 	return connect.NewResponse(rsp), nil
 
 }

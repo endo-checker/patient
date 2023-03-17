@@ -24,7 +24,7 @@ func main() {
 	uri := os.Getenv("MONGO_URI")
 
 	svc := &handler.PatientServer{
-		Store: st.Connect[*patientv1.Patient](uri, "patient"),
+		Store: st.Connect[*patientv1.Patient](uri),
 	}
 	path, hndlr := pbcnn.NewPatientServiceHandler(svc)
 

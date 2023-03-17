@@ -590,9 +590,9 @@ func (m *GetRequest) validate(all bool) error {
 
 	var errors []error
 
-	if err := m._validateUuid(m.GetId()); err != nil {
+	if err := m._validateUuid(m.GetPatientId()); err != nil {
 		err = GetRequestValidationError{
-			field:  "Id",
+			field:  "PatientId",
 			reason: "value must be a valid UUID",
 			cause:  err,
 		}
@@ -1144,9 +1144,9 @@ func (m *DeleteRequest) validate(all bool) error {
 
 	var errors []error
 
-	if err := m._validateUuid(m.GetId()); err != nil {
+	if err := m._validateUuid(m.GetPatientId()); err != nil {
 		err = DeleteRequestValidationError{
-			field:  "Id",
+			field:  "PatientId",
 			reason: "value must be a valid UUID",
 			cause:  err,
 		}

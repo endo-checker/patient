@@ -69,7 +69,7 @@ message QueryResponse  {
 }
 
 // Get is used to specify the patient to retrieve.
-message GetRequest {  string id = 1 [ (validate.rules).string.uuid = true ]; }
+message GetRequest {  string patient_id = 1 [ (validate.rules).string.uuid = true ]; }
 // GetResponse returns an patient based on the patient id
 message GetResponse { Patient patient = 1; }
 
@@ -83,7 +83,7 @@ message UpdateRequest  {
 message UpdateResponse { Patient patient = 1; }
 
 // Delete contains information needed to remove a patient.
-message DeleteRequest { string id = 1 [ (validate.rules).string.uuid = true ];}
+message DeleteRequest { string patient_id = 1 [ (validate.rules).string.uuid = true ];}
 // DeleteResponse returns an empty response and can be ignored.
 message DeleteResponse {}
 

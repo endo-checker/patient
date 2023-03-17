@@ -64,7 +64,7 @@ func (p PatientServer) Create(ctx context.Context, req *connect.Request[pb.Creat
 func (p PatientServer) Get(ctx context.Context, req *connect.Request[pb.GetRequest]) (*connect.Response[pb.GetResponse], error) {
 	reqMsg := req.Msg
 
-	ptnt, err := p.Store.Get(ctx, reqMsg.Id)
+	ptnt, err := p.Store.Get(ctx, reqMsg.PatientId)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeAborted, err)
 	}
@@ -88,7 +88,7 @@ func (p PatientServer) Update(ctx context.Context, req *connect.Request[pb.Updat
 func (p PatientServer) Delete(ctx context.Context, req *connect.Request[pb.DeleteRequest]) (*connect.Response[pb.DeleteResponse], error) {
 	reqMsg := req.Msg
 
-	if err := p.Store.Delete(ctx, reqMsg.Id); err != nil {
+	if err := p.Store.Delete(ctx, reqMsg.PatientId); err != nil {
 		return nil, connect.NewError(connect.CodeAborted, err)
 	}
 

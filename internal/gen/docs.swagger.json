@@ -350,9 +350,6 @@
         },
         "searchText": {
           "type": "string"
-        },
-        "authId": {
-          "type": "string"
         }
       },
       "description": "Query is used to specify the patient to retrieve."

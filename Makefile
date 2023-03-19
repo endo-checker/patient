@@ -21,7 +21,7 @@ run:
 	dapr run \
 		--app-id patient \
 		--app-port 8080 \
-		--app-protocol grpc \
+		--app-protocol http \
 		go run .
 
 .PHONY: kill

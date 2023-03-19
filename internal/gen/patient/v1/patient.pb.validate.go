@@ -353,8 +353,6 @@ func (m *QueryRequest) validate(all bool) error {
 
 	// no validation rules for SearchText
 
-	// no validation rules for AuthId
-
 	if len(errors) > 0 {
 		return QueryRequestMultiError(errors)
 	}

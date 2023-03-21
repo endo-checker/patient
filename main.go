@@ -16,13 +16,15 @@ type Server struct {
 	*http.ServeMux
 }
 
+var addr = ":8080"
+
 func main() {
 
 	godotenv.Load()
 
-	port := ":" + os.Getenv("PORT")
-	if port == ":" {
-		port = ":8080"
+	port := os.Getenv("PORT")
+	if port != "" {
+		addr = ":" + port
 	}
 	uri := os.Getenv("MONGO_URI")
 
@@ -35,5 +37,5 @@ func main() {
 		ServeMux: &http.ServeMux{},
 	}
 
-	sv.Server.ConnectServer(srvr, path, hndlr, port)
+	sv.Server.ConnectServer(srvr, path, hndlr, addr)
 }

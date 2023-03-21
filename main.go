@@ -17,10 +17,13 @@ type Server struct {
 }
 
 func main() {
-	
+
 	godotenv.Load()
 
 	port := ":" + os.Getenv("PORT")
+	if port == ":" {
+		port = ":8080"
+	}
 	uri := os.Getenv("MONGO_URI")
 
 	svc := &handler.PatientServer{

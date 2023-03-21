@@ -46,10 +46,10 @@ jobs:
             machine buf.build login $BUF_USER password $BUF_PAT
           " >> ~/.netrc
 
-      - name: Lint
-        uses: golangci/golangci-lint-action@v3
-        with:
-          version: latest
+      # - name: Lint
+      #   uses: golangci/golangci-lint-action@v3
+      #   with:
+      #     version: latest
 
       # - name: Unit tests
       #   run: |

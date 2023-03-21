@@ -3,14 +3,14 @@ module github.com/endo-checker/patient
 go 1.20
 
 require (
-	buf.build/gen/go/envoyproxy/protoc-gen-validate/protocolbuffers/go v1.29.1-20221025150516-6607b10f00ed.1
+	buf.build/gen/go/envoyproxy/protoc-gen-validate/protocolbuffers/go v1.30.0-20221025150516-6607b10f00ed.1
 	github.com/AvraamMavridis/randomcolor v0.0.0-20180822172341-208aff70bf2c
 	github.com/bufbuild/connect-go v1.5.2
 	github.com/endo-checker/common v1.0.0
 	github.com/google/uuid v1.3.0
 	github.com/joho/godotenv v1.5.1
-	go.mongodb.org/mongo-driver v1.11.2
-	google.golang.org/genproto v0.0.0-20230306155012-7f2fa6fef1f4
+	go.mongodb.org/mongo-driver v1.11.3
+	google.golang.org/genproto v0.0.0-20230320184635-7606e756e683
 	google.golang.org/protobuf v1.30.0
 )
 

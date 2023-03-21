@@ -17,6 +17,7 @@ type Server struct {
 }
 
 func main() {
+	
 	godotenv.Load()
 
 	port := ":" + os.Getenv("PORT")

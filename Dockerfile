@@ -20,7 +20,6 @@ RUN apk update  && apk upgrade && apk add --no-cache git
 WORKDIR /src
 COPY . .
 
-RUN mv .netrc ~/.netrc
 RUN go env -w GOPRIVATE="github.com/endo-checker/*"
 RUN go mod download
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -tags $BUILD_TAGS -installsuffix cgo -o /app

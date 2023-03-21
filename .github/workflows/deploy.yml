@@ -1,4 +1,4 @@
-name: Trigger auto deployment for ca-patient
+name: Build & Deploy 
 
 # When this action will be executed
 on:
@@ -8,7 +8,7 @@ on:
       [ main ]
     paths:
     - '**'
-    - '.github/workflows/ca-patient-AutoDeployTrigger-9a428a0c-1922-413d-b850-ed0b11e3f423.yml'
+    - '.github/workflows/deploy.yml'
 
   # Allow mannually trigger 
   workflow_dispatch:      

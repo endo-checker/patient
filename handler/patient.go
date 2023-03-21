@@ -37,6 +37,7 @@ func (p PatientServer) Create(ctx context.Context, req *connect.Request[pb.Creat
 	return connect.NewResponse(rsp), nil
 }
 
+
 func (p PatientServer) Query(ctx context.Context, req *connect.Request[pb.QueryRequest]) (*connect.Response[pb.QueryResponse], error) {
 	reqMsg := req.Msg
 

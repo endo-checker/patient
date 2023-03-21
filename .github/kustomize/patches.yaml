@@ -1,0 +1,48 @@
+# Patches specific to this repo
+
+# Container App name
+- op: replace
+  path: /name
+  value: ca-patient
+
+# Container App env id
+- op: replace
+  path: /properties/managedEnvironmentId
+  value: /subscriptions/2da318e2-604b-4f60-8984-b801b824a602/resourceGroups/rg-platform/providers/Microsoft.App/managedEnvironments/cae-platform
+
+# # Managed Identity
+# - op: add
+#   path: /
+#   value:
+#     identity:
+#       type: UserAssigned
+#       userAssignedIdentities:
+#         ? /subscriptions/14fde685-a16d-42da-8c52-0ab18051df2f/resourceGroups/rg-platform/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id-platform
+#         : {}
+
+# container name
+- op: replace
+  path: /properties/template/containers/0/name
+  value: patient
+
+# env vars
+- op: add
+  path: /properties/template/containers/0/env
+  value:
+    - name: MONGO_URI
+      secretRef: mongo-uri
+
+
+# container resources
+# - op: replace
+#   path: /properties/template/containers/0/resources
+#   value:
+#     cpu: 0.5
+#     memory: 1Gi
+
+# container scaling
+# - op: replace
+#   path: /properties/template/scale
+#   value:
+#     minReplicas: 1
+#     maxReplicas: 1

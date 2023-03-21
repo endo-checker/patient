@@ -37,7 +37,7 @@ jobs:
           push: true
           tags: acrendochecker.azurecr.io/ca-patient:${{ github.sha }}
           file: ./DockerFile
-          context: ./DockerFile
+          context: ./
 
 
   deploy:

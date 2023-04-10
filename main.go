@@ -19,7 +19,6 @@ type Server struct {
 var addr = ":8080"
 
 func main() {
-
 	godotenv.Load()
 
 	port := os.Getenv("PORT")

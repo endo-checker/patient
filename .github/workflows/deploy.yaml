@@ -1,0 +1,52 @@
+# Builds and publishes a container image to the Azure container registry,
+# then deploys it as a Container App revision.
+
+# Skip this (any) workflow:
+#  [skip ci | ci skip | no ci | skip actions | actions skip]
+# See https://docs.github.com/en/actions/managing-workflow-runs/skipping-workflow-runs
+
+name: Deploy Development
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    uses: endo-checker/build/.github/workflows/go-validate.yaml@main
+    secrets: inherit
+
+  patch:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Edit kustomization.yaml
+        run: |
+          cd ./.github/kustomize
+          kustomize edit add patch --kind containerapp --patch '[
+            {"op": "add", "path": "/properties/configuration/secrets/-", "value": {"name": "mongo-uri", "value": "${{ secrets.MONGO_URI }}"}}
+          ]'
+
+      - name: Cache kustomization.yaml
+        uses: actions/cache/save@v3
+        id: cache
+        with:
+          path: ./.github/kustomize/kustomization.yaml
+          key: cache-${{ github.run_id }}
+
+  deploy:
+    needs:
+      - validate
+      - patch
+    uses: endo-checker/build/.github/workflows/container-app-deploy.yaml@main
+    secrets: inherit
+    with:
+      resourceGroup: ${{ vars.RESOURCE_GROUP }}
+      acrName: ${{ vars.ACR_NAME }}
+      cacheKey: cache-${{ github.run_id }}
+

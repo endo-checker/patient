@@ -4,6 +4,6 @@
         "-tags jwx_es256k"
     ],
     "yaml.schemas": {
-        "https://json.schemastore.org/github-workflow.json": "./.github/workflows/*.y?ml"
-    }
+        "https://json.schemastore.org/github-workflow.json": "${workspaceFolder}/.github/workflows/deploy.yaml",
+    },
 }

@@ -3,7 +3,7 @@ package store
 import (
 	"context"
 
-	st "github.com/endo-checker/common/store"
+	st "github.com/endo-checker/protostore/store"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"

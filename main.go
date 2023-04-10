@@ -1,10 +1,12 @@
 package main
 
 import (
+	"context"
+	"log"
 	"net/http"
 	"os"
 
-	sv "github.com/endo-checker/common/server"
+	sv "github.com/endo-checker/protostore/server"
 	"github.com/joho/godotenv"
 
 	"github.com/endo-checker/patient/handler"
@@ -19,7 +21,9 @@ type Server struct {
 var addr = ":8080"
 
 func main() {
-	godotenv.Load()
+	if err := godotenv.Load(); err != nil {
+		log.Fatalf("No .env found: %v", err)
+	}
 
 	port := os.Getenv("PORT")
 	if port != "" {
@@ -36,5 +40,10 @@ func main() {
 		ServeMux: &http.ServeMux{},
 	}
 
-	sv.Server.ConnectServer(srvr, path, hndlr, addr)
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	if err := srvr.ConnectServer(ctx, path, hndlr, addr); err != nil {
+		log.Fatalf("Failed to start server: %v", err)
+	}
 }

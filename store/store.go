@@ -1,7 +1,7 @@
 package store
 
 import (
-	st "github.com/endo-checker/common/store"
+	st "github.com/endo-checker/protostore/store"
 	patientv1 "github.com/endo-checker/patient/internal/gen/patient/v1"
 )
 

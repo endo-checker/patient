@@ -34,6 +34,9 @@ func (p PatientServer) Create(ctx context.Context, req *connect.Request[pb.Creat
 	rsp := &pb.CreateResponse{
 		Patient: ptnt,
 	}
+	if err := connect.NewResponse(rsp); err != nil {
+		return err, nil
+	}
 	return connect.NewResponse(rsp), nil
 }
 
@@ -60,6 +63,9 @@ func (p PatientServer) Query(ctx context.Context, req *connect.Request[pb.QueryR
 		Cursor:  cur,
 		Matches: mat,
 	}
+	if err := connect.NewResponse(rsp); err != nil {
+		return err, nil
+	}
 	return connect.NewResponse(rsp), nil
 }
 
@@ -72,6 +78,9 @@ func (p PatientServer) Get(ctx context.Context, req *connect.Request[pb.GetReque
 	}
 
 	rsp := &pb.GetResponse{Patient: ptnt}
+	if err := connect.NewResponse(rsp); err != nil {
+		return err, nil
+	}
 	return connect.NewResponse(rsp), nil
 }
 
@@ -85,6 +94,9 @@ func (p PatientServer) Update(ctx context.Context, req *connect.Request[pb.Updat
 	rsp := &pb.UpdateResponse{
 		Patient: reqMsg.Patient,
 	}
+	if err := connect.NewResponse(rsp); err != nil {
+		return err, nil
+	}
 	return connect.NewResponse(rsp), nil
 
 }
@@ -97,5 +109,8 @@ func (p PatientServer) Delete(ctx context.Context, req *connect.Request[pb.Delet
 	}
 
 	rsp := &pb.DeleteResponse{}
+	if err := connect.NewResponse(rsp); err != nil {
+		return err, nil
+	}
 	return connect.NewResponse(rsp), nil
 }

@@ -6,7 +6,7 @@ require (
 	buf.build/gen/go/envoyproxy/protoc-gen-validate/protocolbuffers/go v1.30.0-20221025150516-6607b10f00ed.1
 	github.com/AvraamMavridis/randomcolor v0.0.0-20180822172341-208aff70bf2c
 	github.com/bufbuild/connect-go v1.5.2
-	github.com/endo-checker/common v1.0.0
+	github.com/endo-checker/protostore v1.0.2
 	github.com/google/uuid v1.3.0
 	github.com/joho/godotenv v1.5.1
 	go.mongodb.org/mongo-driver v1.11.3

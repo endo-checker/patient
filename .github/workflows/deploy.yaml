@@ -46,7 +46,6 @@ jobs:
     uses: endo-checker/build/.github/workflows/container-app-deploy.yaml@main
     secrets: inherit
     with:
-      resourceGroup: rg-platform
-      acrName: acrendochecker
+      resourceGroup: ${{ vars.RESOURCE_GROUP }}
+      acrName: ${{ vars.ACR_NAME }}
       cacheKey: cache-${{ github.run_id }}
-

@@ -1,0 +1,6 @@
+run:
+  build-tags:
+    - jwx_es256k
+  modules-download-mode: readonly
+# issues:
+#   exclude:

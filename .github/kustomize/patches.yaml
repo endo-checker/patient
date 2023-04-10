@@ -31,4 +31,3 @@
   value:
     - name: MONGO_URI
       secretRef: mongo-uri
-   

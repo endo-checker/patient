@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"log"
 	"net/http"
 	"os"
@@ -18,16 +17,16 @@ type Server struct {
 	*http.ServeMux
 }
 
-var addr = ":8080"
+var addr = "8080"
 
 func main() {
 	if err := godotenv.Load(); err != nil {
 		log.Fatalf("No .env found: %v", err)
 	}
 
-	port := os.Getenv("PORT")
-	if port != "" {
-		addr = ":" + port
+	port := os.Getenv("APP_PORT")
+	if port == "" {
+		port = addr
 	}
 	uri := os.Getenv("MONGO_URI")
 
@@ -40,10 +39,7 @@ func main() {
 		ServeMux: &http.ServeMux{},
 	}
 
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
-
-	if err := srvr.ConnectServer(ctx, path, hndlr, addr); err != nil {
+	if err := srvr.ConnectServer(path, ":"+port, hndlr); err != nil {
 		log.Fatalf("Failed to start server: %v", err)
 	}
 }
